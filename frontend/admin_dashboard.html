@@ -217,7 +217,7 @@ function logout(){
 function toast(m,t='t-ok'){const e=document.getElementById('toast');e.textContent=m;e.className=`show ${t}`;clearTimeout(e._t);e._t=setTimeout(()=>e.className='',3400)}
 
 /* ═══ DATA & API ═══ */
-const API = 'http://localhost:5000';
+const API = 'https://digital-outpass-system-nb41.onrender.com';
 const token = localStorage.getItem('admin_token'); 
 
 let allData = [];
