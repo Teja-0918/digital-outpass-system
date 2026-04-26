@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Request Outpass — VNR VJIET</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--red:#c0182a;--red-dark:#9b1020;--red-light:#fef2f2;--red-border:#fca5a5;--gold:#c9980a;--gold-soft:#fde68a;--gold-light:#fefce8;--white:#fff;--g50:#f9fafb;--g100:#f3f4f6;--g200:#e5e7eb;--g300:#d1d5db;--g400:#9ca3af;--g500:#6b7280;--g700:#374151;--g900:#111827;--green:#15803d;--green-lt:#f0fdf4;--green-bd:#bbf7d0}
+body{font-family:'Poppins',sans-serif;background:var(--white);min-height:100vh;display:flex;flex-direction:column;color:var(--g900)}
+
+/* Strip */
+.strip{background:linear-gradient(90deg,var(--red-dark),var(--red));padding:6px 40px;font-size:.67rem;color:rgba(255,255,255,.88);display:flex;justify-content:space-between;align-items:center}
+.strip-dot{display:inline-block;width:6px;height:6px;background:var(--gold);border-radius:50%;margin-right:8px;animation:blink 1.6s ease-in-out infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+.strip-r{color:var(--gold-soft);font-weight:600}
+
+/* Navbar */
+.navbar{background:var(--white);border-bottom:3px solid var(--red);padding:0 40px;height:66px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 12px rgba(192,24,42,.09);position:sticky;top:0;z-index:100}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none}
+.logo-s{width:46px;height:46px;flex-shrink:0}
+.b-name{font-size:1.05rem;font-weight:800;color:var(--red)}
+.b-sub{font-size:.58rem;color:var(--g500)}
+.b-tag{font-size:.58rem;font-weight:600;color:var(--gold);font-style:italic}
+.nav-r{display:flex;align-items:center;gap:10px}
+.nav-av{width:34px;height:34px;background:linear-gradient(135deg,var(--red),var(--red-dark));border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:700;color:#fff;box-shadow:0 2px 8px rgba(192,24,42,.3)}
+.nav-nm{font-size:.8rem;font-weight:700;color:var(--g900)}
+.nav-rl{font-size:.62rem;color:var(--g500)}
+.btn-bk{display:flex;align-items:center;gap:6px;padding:7px 14px;border:1.5px solid var(--g200);border-radius:8px;background:var(--white);color:var(--g500);font-family:inherit;font-size:.78rem;font-weight:600;cursor:pointer;text-decoration:none;transition:.2s}
+.btn-bk:hover{border-color:var(--red);color:var(--red);background:var(--red-light)}
+
+/* Page */
+.page{flex:1;background:var(--g50);padding:36px 16px 60px;display:flex;flex-direction:column;align-items:center}
+
+/* Stepper */
+.stepper{display:flex;align-items:center;gap:0;margin-bottom:32px;width:100%;max-width:640px}
+.step{display:flex;align-items:center;gap:8px;flex:1;position:relative}
+.step-circle{width:36px;height:36px;border-radius:50%;border:2.5px solid var(--g300);background:var(--white);display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700;color:var(--g400);transition:.3s;flex-shrink:0;z-index:2}
+.step.active .step-circle{border-color:var(--red);background:var(--red);color:#fff;box-shadow:0 3px 12px rgba(192,24,42,.3)}
+.step.done .step-circle{border-color:var(--green);background:var(--green);color:#fff}
+.step-label{font-size:.72rem;font-weight:600;color:var(--g400);white-space:nowrap;transition:.2s}
+.step.active .step-label{color:var(--red)}
+.step.done .step-label{color:var(--green)}
+.step-line{flex:1;height:2px;background:var(--g200);margin:0 4px;transition:.3s}
+.step-line.filled{background:var(--green)}
+
+/* Card */
+.card{width:100%;max-width:640px;background:var(--white);border:1px solid var(--g200);border-radius:16px;overflow:hidden;box-shadow:0 4px 6px rgba(0,0,0,.04),0 12px 40px rgba(192,24,42,.08)}
+.card-bar{height:4px;background:linear-gradient(90deg,var(--red-dark),var(--red),var(--gold))}
+.card-body{padding:32px 36px 28px}
+
+/* Card head */
+.c-head{display:flex;align-items:center;gap:12px;margin-bottom:24px;padding-bottom:18px;border-bottom:1px solid var(--g100)}
+.c-icon{width:46px;height:46px;background:linear-gradient(135deg,var(--red),var(--red-dark));border-radius:12px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 14px rgba(192,24,42,.28);flex-shrink:0}
+.c-h2{font-size:1.02rem;font-weight:700;color:var(--g900)}
+.c-p{font-size:.76rem;color:var(--g500);margin-top:2px}
+
+/* Step panels */
+.step-panel{display:none;animation:fadeIn .35s ease}
+.step-panel.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+/* Form fields */
+.sec-h{font-size:.67rem;font-weight:700;color:var(--red);text-transform:uppercase;letter-spacing:.7px;margin:18px 0 12px;display:flex;align-items:center;gap:8px}
+.sec-h::after{content:'';flex:1;height:1px;background:var(--g200)}
+.field{margin-bottom:16px}
+.f-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.f-label{display:block;font-size:.75rem;font-weight:600;color:var(--g700);margin-bottom:6px}
+.f-label .req{color:var(--red)}
+.f-label .opt{font-size:.6rem;color:var(--g400);background:var(--g100);border-radius:3px;padding:1px 5px;margin-left:4px}
+.iw{position:relative}
+.fi{position:absolute;left:11px;top:50%;transform:translateY(-50%);color:var(--g400);display:flex;pointer-events:none;transition:.18s}
+.iw:focus-within .fi{color:var(--red)}
+.fi.top{top:13px;transform:none}
+.f-input{width:100%;padding:10px 12px 10px 37px;border:1.5px solid var(--g200);border-radius:8px;font-family:inherit;font-size:.85rem;color:var(--g900);background:#fafafa;outline:none;transition:.2s}
+.f-input::placeholder{color:var(--g300)}
+.f-input:focus{border-color:var(--red);background:var(--white);box-shadow:0 0 0 3px rgba(192,24,42,.08)}
+.f-input.err{border-color:var(--red);background:var(--red-light)}
+textarea.f-input{resize:vertical;min-height:90px;line-height:1.5;padding-top:10px}
+.f-err{display:none;font-size:.7rem;color:var(--red);font-weight:500;margin-top:4px}
+.f-err.show{display:block}
+.dur-box{display:none;align-items:center;gap:6px;background:var(--green-lt);border:1px solid var(--green-bd);border-radius:8px;padding:9px 12px;font-size:.77rem;font-weight:600;color:var(--green);margin:6px 0 12px}
+.dur-box.show{display:flex}
+
+/* Buttons */
+.btn-primary{width:100%;padding:12px;border:none;border-radius:9px;background:linear-gradient(135deg,var(--red),var(--red-dark));color:#fff;font-family:inherit;font-size:.9rem;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 4px 16px rgba(192,24,42,.32);transition:.22s}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(192,24,42,.42)}
+.btn-primary:active{transform:scale(.98)}
+.btn-primary:disabled{opacity:.65;cursor:not-allowed;transform:none}
+.btn-outline{padding:12px 20px;border:1.5px solid var(--g200);border-radius:9px;background:var(--white);color:var(--g500);font-family:inherit;font-size:.85rem;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:7px;transition:.2s;text-decoration:none}
+.btn-outline:hover{border-color:var(--red);color:var(--red);background:var(--red-light)}
+.btn-row{display:flex;gap:10px;margin-top:4px}
+
+/* Parent cards */
+.parent-card{border:1.5px solid var(--g200);border-radius:12px;padding:14px 18px;margin-bottom:10px;display:flex;align-items:center;gap:14px;cursor:pointer;transition:.2s;user-select:none}
+.parent-card:hover{border-color:var(--red-border);background:var(--red-light)}
+.parent-card.selected{border-color:var(--red);background:var(--red-light);box-shadow:0 0 0 3px rgba(192,24,42,.1)}
+.pc-avatar{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0}
+.pc-av1{background:#eff6ff}
+.pc-av2{background:var(--gold-light)}
+.pc-name{font-size:.85rem;font-weight:700;color:var(--g900)}
+.pc-num{font-size:.75rem;color:var(--g500);font-family:monospace;letter-spacing:.5px;margin-top:2px}
+.pc-check{margin-left:auto;width:22px;height:22px;border:2px solid var(--g300);border-radius:6px;display:flex;align-items:center;justify-content:center;transition:.2s;flex-shrink:0}
+.parent-card.selected .pc-check{border-color:var(--red);background:var(--red);color:#fff}
+
+/* OTP */
+.otp-wrap{display:flex;gap:10px;justify-content:center;margin:20px 0}
+.otp-box{width:52px;height:56px;border:2px solid var(--g200);border-radius:10px;text-align:center;font-family:inherit;font-size:1.3rem;font-weight:700;color:var(--g900);outline:none;transition:.2s}
+.otp-box:focus{border-color:var(--red);box-shadow:0 0 0 3px rgba(192,24,42,.1)}
+.otp-box.err{border-color:var(--red);background:var(--red-light)}
+.otp-box.ok{border-color:var(--green);background:var(--green-lt)}
+.resend{text-align:center;font-size:.75rem;color:var(--g400);margin-top:10px}
+.resend a{color:var(--red);font-weight:600;cursor:pointer;text-decoration:none}
+
+/* QR */
+.qr-success{text-align:center;padding:10px 0}
+.qr-icon{width:68px;height:68px;background:var(--green-lt);border:3px solid var(--green-bd);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:2rem;margin:0 auto 14px;animation:popIn .4s cubic-bezier(.34,1.56,.64,1)}
+@keyframes popIn{from{transform:scale(.5);opacity:0}to{transform:scale(1);opacity:1}}
+.qr-title{font-size:1.2rem;font-weight:800;color:var(--g900);margin-bottom:4px}
+.qr-sub{font-size:.82rem;color:var(--g500);margin-bottom:16px}
+.qr-frame{display:inline-block;padding:16px;border:2px solid var(--g200);border-radius:14px;background:var(--white);box-shadow:0 4px 20px rgba(0,0,0,.08);margin-bottom:14px}
+.qr-id{display:inline-block;background:var(--green-lt);border:1px solid var(--green-bd);color:var(--green);border-radius:7px;padding:5px 14px;font-size:.78rem;font-weight:700;margin-bottom:8px}
+.qr-note{font-size:.73rem;color:var(--g400);margin-top:10px;line-height:1.6}
+.qr-note strong{color:var(--g700)}
+.qr-actions{display:flex;gap:10px;justify-content:center;margin-top:18px;flex-wrap:wrap}
+
+/* Note */
+.note{display:flex;gap:8px;background:var(--gold-light);border:1px solid var(--gold-soft);border-left:4px solid var(--gold);border-radius:8px;padding:10px 12px;margin:16px 0;font-size:.76rem;color:#78350f;line-height:1.55}
+.note strong{font-weight:700}
+
+/* Toast */
+#toast{position:fixed;bottom:26px;left:50%;transform:translateX(-50%) translateY(14px);padding:10px 22px;border-radius:999px;font-size:.8rem;font-weight:600;color:#fff;opacity:0;pointer-events:none;transition:.3s cubic-bezier(.34,1.4,.64,1);z-index:9999;box-shadow:0 4px 20px rgba(0,0,0,.18);white-space:nowrap}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.t-ok{background:var(--green)}.t-err{background:var(--red)}.t-warn{background:#d97706}
+
+/* Spinner */
+@keyframes spin{to{transform:rotate(360deg)}}
+.spin{width:16px;height:16px;border:2.5px solid rgba(255,255,255,.35);border-top-color:#fff;border-radius:50%;animation:spin .75s linear infinite;display:inline-block}
+
+/* Footer */
+.footer{background:var(--white);border-top:1px solid var(--g200);padding:14px 40px;font-size:.7rem;color:var(--g500);text-align:center}
+.footer strong{color:var(--red)}
+
+@media(max-width:640px){
+  .navbar{padding:0 14px;height:58px}.strip{padding:5px 14px;font-size:.62rem}.strip-r{display:none}
+  .b-sub,.b-tag,.nav-nm,.nav-rl{display:none}.page{padding:24px 10px 44px}
+  .card-body{padding:22px 16px 20px}.f-row{grid-template-columns:1fr}
+  .stepper{gap:0;flex-wrap:nowrap;overflow-x:auto}.step-label{font-size:.6rem}
+  .btn-row{flex-direction:column-reverse}.footer{padding:12px 16px}
+}
+</style>
+</head>
+<body>
+
+<div class="strip">
+  <span><span class="strip-dot"></span>NAAC A+ · Autonomous · JNTUH · VNR VJIET Bachupally</span>
+  <span class="strip-r">Digital Outpass System · AY 2025–26</span>
+</div>
+
+<nav class="navbar">
+  <a href="index.html" class="brand">
+    <svg class="logo-s" viewBox="0 0 52 52" fill="none"><rect width="52" height="52" rx="10" fill="#c0182a"/><path d="M26 8L40 13V27C40 35 26 44 26 44S12 35 12 27V13Z" fill="#fff" opacity=".95"/><text x="17" y="33" font-family="Poppins" font-weight="800" font-size="18" fill="#c0182a" letter-spacing="-1">VNR</text><rect x="12" y="38" width="28" height="3" rx="1.5" fill="#c9980a"/><circle cx="26" cy="9" r="2.5" fill="#c9980a"/></svg>
+    <div><div class="b-name">VNR VJIET</div><div class="b-sub">Vallurupalli Nageswara Rao Vignana Jyothi Institute of Engineering &amp; Technology</div><div class="b-tag">✦ Empowering Minds, Building Futures ✦</div></div>
+  </a>
+  <div class="nav-r">
+    <div class="nav-av">A</div>
+    <div><div class="nav-nm">Aarav Singh</div><div class="nav-rl">22VV1A0501 · CSE-A</div></div>
+    <a href="student.html" class="btn-bk">← Dashboard</a>
+  </div>
+</nav>
+
+<div class="page">
+
+  <!-- Stepper -->
+  <div class="stepper" id="stepper">
+    <div class="step active" id="s1"><div class="step-circle">1</div><div class="step-label">Outpass Form</div></div>
+    <div class="step-line" id="l1"></div>
+    <div class="step" id="s2"><div class="step-circle">2</div><div class="step-label">Parent Approval</div></div>
+    <div class="step-line" id="l2"></div>
+    <div class="step" id="s3"><div class="step-circle">3</div><div class="step-label">OTP Verify</div></div>
+    <div class="step-line" id="l3"></div>
+    <div class="step" id="s4"><div class="step-circle">4</div><div class="step-label">QR Code</div></div>
+  </div>
+
+  <div class="card">
+    <div class="card-bar"></div>
+    <div class="card-body">
+
+      <!-- ═══ STEP 1: FORM ═══ -->
+      <div class="step-panel active" id="panel-1">
+        <div class="c-head">
+          <div class="c-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+          <div><div class="c-h2">Outpass Request Form</div><div class="c-p">Short-duration campus exit request</div></div>
+        </div>
+
+        <div class="sec-h">Exit & Return Timing</div>
+        <div class="f-row">
+          <div class="field">
+            <label class="f-label" for="out-t">Out Time <span class="req">*</span></label>
+            <div class="iw"><span class="fi"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></span><input type="datetime-local" id="out-t" class="f-input"/></div>
+            <div class="f-err" id="e-out">Please select out time</div>
+          </div>
+          <div class="field">
+            <label class="f-label" for="in-t">In Time <span class="req">*</span></label>
+            <div class="iw"><span class="fi"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></span><input type="datetime-local" id="in-t" class="f-input"/></div>
+            <div class="f-err" id="e-in">Please select in time</div>
+          </div>
+        </div>
+        <div class="dur-box" id="dur-box"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg><span id="dur-txt"></span></div>
+
+        <div class="sec-h">Purpose of Outing</div>
+        <div class="field">
+          <label class="f-label" for="purpose">Description <span class="req">*</span></label>
+          <div class="iw"><span class="fi top"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></span><textarea id="purpose" class="f-input" placeholder="Describe your reason for outing…" maxlength="300"></textarea></div>
+          <div class="f-err" id="e-purp">Please describe the purpose</div>
+        </div>
+
+        <div class="sec-h">Contact (Optional)</div>
+        <div class="field">
+          <label class="f-label" for="mobile">Mobile <span class="opt">Optional</span></label>
+          <div class="iw"><span class="fi"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg></span><input type="tel" id="mobile" class="f-input" placeholder="10-digit number" maxlength="10"/></div>
+          <div class="f-err" id="e-mob">Enter a valid 10-digit number</div>
+        </div>
+
+        <button class="btn-primary" onclick="goStep2()">Proceed for Approval →</button>
+      </div>
+
+      <!-- ═══ STEP 2: PARENT SELECTION ═══ -->
+      <div class="step-panel" id="panel-2">
+        <div class="c-head">
+          <div class="c-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+          <div><div class="c-h2">Select Parent(s) for Approval</div><div class="c-p">Choose who should receive the OTP for approval</div></div>
+        </div>
+
+        <div class="parent-card" id="p1" onclick="toggleParent('p1')">
+          <div class="pc-avatar pc-av1">👨</div>
+          <div><div class="pc-name">Father</div><div class="pc-num">98XX XX 1234</div></div>
+          <div class="pc-check" id="chk1"></div>
+        </div>
+        <div class="parent-card" id="p2" onclick="toggleParent('p2')">
+          <div class="pc-avatar pc-av2">👩</div>
+          <div><div class="pc-name">Mother</div><div class="pc-num">87XX XX 5678</div></div>
+          <div class="pc-check" id="chk2"></div>
+        </div>
+        <div class="f-err" id="e-par" style="text-align:center;margin-bottom:10px">Please select at least one parent</div>
+
+        <div class="note"><span style="flex-shrink:0">⚠️</span><p><strong>Note:</strong> An OTP will be sent to the selected parent's registered number for verification.</p></div>
+
+        <div class="btn-row">
+          <button class="btn-outline" onclick="backTo(1)">← Back</button>
+          <button class="btn-primary" style="flex:1" onclick="sendOTP()">Send OTP →</button>
+        </div>
+      </div>
+
+      <!-- ═══ STEP 3: OTP ═══ -->
+      <div class="step-panel" id="panel-3">
+        <div class="c-head">
+          <div class="c-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></div>
+          <div><div class="c-h2">OTP Verification</div><div class="c-p">Enter the 4-digit OTP sent to the selected parent</div></div>
+        </div>
+
+        <div style="text-align:center;margin:10px 0 6px;font-size:.82rem;color:var(--g500)">OTP sent to <strong id="otp-sent" style="color:var(--g900)">98XXXX1234</strong></div>
+
+        <div class="otp-wrap" id="otp-wrap">
+          <input type="text" class="otp-box" maxlength="1" id="o1" oninput="otpInput(this,1)" onkeydown="otpKey(event,1)"/>
+          <input type="text" class="otp-box" maxlength="1" id="o2" oninput="otpInput(this,2)" onkeydown="otpKey(event,2)"/>
+          <input type="text" class="otp-box" maxlength="1" id="o3" oninput="otpInput(this,3)" onkeydown="otpKey(event,3)"/>
+          <input type="text" class="otp-box" maxlength="1" id="o4" oninput="otpInput(this,4)" onkeydown="otpKey(event,4)"/>
+        </div>
+        <div class="f-err" id="e-otp" style="text-align:center">Invalid OTP. Please try again.</div>
+        <div class="resend">Didn't receive OTP? <a onclick="resendOTP()">Resend OTP</a></div>
+        <div style="margin-top:4px;text-align:center;font-size:.68rem;color:var(--g400)">Hint: use <strong>1234</strong></div>
+
+        <div class="btn-row" style="margin-top:18px">
+          <button class="btn-outline" onclick="backTo(2)">← Back</button>
+          <button class="btn-primary" style="flex:1" id="verify-btn" onclick="verifyOTP()">Verify OTP</button>
+        </div>
+      </div>
+
+      <!-- ═══ STEP 4: QR ═══ -->
+      <div class="step-panel" id="panel-4">
+        <div class="qr-success">
+          <div class="qr-icon">✅</div>
+          <div class="qr-title">Outpass Approved!</div>
+          <div class="qr-sub">Your outpass has been verified and approved.</div>
+          <div class="qr-id" id="qr-req-id">OP-2026-0001</div>
+          <div class="qr-frame"><div id="qr-code"></div></div>
+          <div class="qr-note"><strong>Important:</strong> This QR code must be scanned at both <strong>exit</strong> and <strong>entry</strong> gates by the security personnel.</div>
+          <div class="qr-actions">
+            <button class="btn-primary" style="flex:none;width:auto;padding:11px 20px" onclick="window.location.href='student.html'">🏠 Go to Dashboard</button>
+            <button class="btn-outline" onclick="window.print()">🖨️ Print Pass</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<footer class="footer">&copy; 2026 <strong>VNR VJIET</strong> · Digital Outpass System · All rights reserved.</footer>
+<div id="toast"></div>
+
+<script>
+let currentStep = 1;
+const selected = { p1: false, p2: false };
+
+/* ─── Toast ─── */
+function toast(m, t='t-ok') {
+  const el = document.getElementById('toast');
+  el.textContent = m; el.className = `show ${t}`;
+  clearTimeout(el._t); el._t = setTimeout(() => el.className = '', 3400);
+}
+
+/* ─── Stepper ─── */
+function updateStepper(step) {
+  for (let i = 1; i <= 4; i++) {
+    const s = document.getElementById('s' + i);
+    s.className = i < step ? 'step done' : i === step ? 'step active' : 'step';
+  }
+  for (let i = 1; i <= 3; i++) {
+    document.getElementById('l' + i).className = i < step ? 'step-line filled' : 'step-line';
+  }
+}
+
+function showPanel(n) {
+  document.querySelectorAll('.step-panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('panel-' + n).classList.add('active');
+  currentStep = n;
+  updateStepper(n);
+}
+
+function backTo(n) { showPanel(n); }
+
+/* ─── Duration calc ─── */
+function calcDur() {
+  const o = document.getElementById('out-t').value, i = document.getElementById('in-t').value;
+  const box = document.getElementById('dur-box');
+  if (o && i && i > o) {
+    const d = Math.round((new Date(i) - new Date(o)) / 60000);
+    const h = Math.floor(d / 60), m = d % 60;
+    document.getElementById('dur-txt').textContent = `Duration: ${h > 0 ? h + 'h ' : ''}${m}m outside campus`;
+    box.classList.add('show');
+  } else box.classList.remove('show');
+}
+document.getElementById('out-t').addEventListener('change', () => { document.getElementById('in-t').min = document.getElementById('out-t').value; calcDur(); });
+document.getElementById('in-t').addEventListener('change', calcDur);
+
+/* Set min to now */
+const nowISO = new Date(Date.now() - new Date().getTimezoneOffset() * 60000).toISOString().slice(0, 16);
+document.getElementById('out-t').min = nowISO;
+document.getElementById('in-t').min = nowISO;
+
+/* ─── Step 1 → 2 ─── */
+function goStep2() {
+  const ot = document.getElementById('out-t').value;
+  const it = document.getElementById('in-t').value;
+  const pu = document.getElementById('purpose').value.trim();
+  const mo = document.getElementById('mobile').value.trim();
+  let ok = true;
+
+  [['out-t','e-out',!ot],['in-t','e-in',!it || it <= ot],['purpose','e-purp',!pu]].forEach(([id,eid,bad]) => {
+    const el = document.getElementById(id); const erEl = document.getElementById(eid);
+    if (bad) { el.classList.add('err'); erEl.classList.add('show'); ok = false; }
+    else { el.classList.remove('err'); erEl.classList.remove('show'); }
+  });
+  if (it && ot && it <= ot) document.getElementById('e-in').textContent = 'In time must be after out time';
+  if (mo && !/^\d{10}$/.test(mo)) { document.getElementById('mobile').classList.add('err'); document.getElementById('e-mob').classList.add('show'); ok = false; }
+  else { document.getElementById('mobile').classList.remove('err'); document.getElementById('e-mob').classList.remove('show'); }
+
+  if (!ok) { toast('⚠️ Please fix the errors', 't-warn'); return; }
+
+  console.log('╔═══ Outpass Form Data ═══╗');
+  console.log('  Out Time :', new Date(ot).toLocaleString('en-IN'));
+  console.log('  In Time  :', new Date(it).toLocaleString('en-IN'));
+  console.log('  Purpose  :', pu);
+  console.log('  Mobile   :', mo || 'N/A');
+  console.log('╚═════════════════════════╝');
+
+  showPanel(2);
+  toast('✅ Form validated — select parent(s)');
+}
+
+/* ─── Step 2: Parent toggle ─── */
+function toggleParent(id) {
+  selected[id] = !selected[id];
+  const el = document.getElementById(id);
+  el.classList.toggle('selected', selected[id]);
+  const chk = el.querySelector('.pc-check');
+  chk.innerHTML = selected[id] ? '✓' : '';
+  document.getElementById('e-par').classList.remove('show');
+}
+
+function sendOTP() {
+  if (!selected.p1 && !selected.p2) { document.getElementById('e-par').classList.add('show'); toast('⚠️ Select at least one parent', 't-warn'); return; }
+  const members = [];
+  if (selected.p1) members.push('Father (98XXXX1234)');
+  if (selected.p2) members.push('Mother (87XXXX5678)');
+  console.log('Selected Members:', members);
+  document.getElementById('otp-sent').textContent = selected.p1 ? '98XXXX1234' : '87XXXX5678';
+  showPanel(3);
+  document.getElementById('o1').focus();
+  toast('📤 OTP sent to parent');
+}
+
+/* ─── Step 3: OTP ─── */
+function otpInput(el, n) {
+  el.value = el.value.replace(/[^0-9]/g, '');
+  if (el.value && n < 4) document.getElementById('o' + (n + 1)).focus();
+  document.getElementById('e-otp').classList.remove('show');
+  document.querySelectorAll('.otp-box').forEach(b => b.classList.remove('err'));
+}
+function otpKey(e, n) {
+  if (e.key === 'Backspace' && !e.target.value && n > 1) document.getElementById('o' + (n - 1)).focus();
+}
+function resendOTP() { toast('📤 OTP resent!'); }
+
+function verifyOTP() {
+  const otp = [1,2,3,4].map(i => document.getElementById('o'+i).value).join('');
+  if (otp.length < 4) {
+    document.querySelectorAll('.otp-box').forEach(b => b.classList.add('err'));
+    document.getElementById('e-otp').classList.add('show');
+    toast('⚠️ Enter all 4 digits', 't-warn'); return;
+  }
+  const btn = document.getElementById('verify-btn');
+  btn.disabled = true; btn.innerHTML = '<span class="spin"></span> Verifying…';
+
+  setTimeout(() => {
+    if (otp === '1234') {
+      document.querySelectorAll('.otp-box').forEach(b => { b.classList.remove('err'); b.classList.add('ok'); });
+      console.log('✅ OTP Verified:', otp);
+      setTimeout(() => generateQR(), 600);
+    } else {
+      document.querySelectorAll('.otp-box').forEach(b => b.classList.add('err'));
+      document.getElementById('e-otp').classList.add('show');
+      btn.disabled = false; btn.innerHTML = 'Verify OTP';
+      toast('❌ Invalid OTP. Try 1234', 't-err');
+    }
+  }, 1200);
+}
+
+/* ─── Step 4: QR ─── */
+function generateQR() {
+  const ot = document.getElementById('out-t').value;
+  const it = document.getElementById('in-t').value;
+  const reqId = 'OP-2026-' + String(Math.floor(1000 + Math.random() * 9000));
+  document.getElementById('qr-req-id').textContent = reqId;
+
+  const qrData = JSON.stringify({
+    id: reqId,
+    roll: '22VV1A0501',
+    name: 'Aarav Singh',
+    outTime: new Date(ot).toLocaleString('en-IN'),
+    inTime: new Date(it).toLocaleString('en-IN'),
+    status: 'Approved'
+  });
+
+  showPanel(4);
+  const qrEl = document.getElementById('qr-code');
+  qrEl.innerHTML = '';
+  new QRCode(qrEl, { text: qrData, width: 180, height: 180, colorDark: '#c0182a', colorLight: '#ffffff', correctLevel: QRCode.CorrectLevel.M });
+
+  console.log('╔═══ QR Code Generated ═══╗');
+  console.log('  Request ID:', reqId);
+  console.log('  QR Data   :', qrData);
+  console.log('╚══════════════════════════╝');
+  toast('🎉 Outpass Approved! QR Generated');
+}
+</script>
+</body>
+</html>

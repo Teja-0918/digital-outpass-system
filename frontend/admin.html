@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Dashboard — Digital Outpass System</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    body { background: #f8fafc; }
+    .action-btns { display: flex; gap: 6px; flex-wrap: nowrap; }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <a href="index.html" class="nav-brand">
+      <div class="nav-logo-box">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M5 12h14"/><path d="M12 5l7 7-7 7"/>
+        </svg>
+      </div>
+      <div class="nav-brand-text">
+        <span class="nav-brand-name">Digital Outpass System</span>
+        <span class="nav-brand-sub">Admin Dashboard</span>
+      </div>
+    </a>
+    <div class="nav-center">
+      <div class="nav-tabs">
+        <a href="admin.html" class="nav-tab active">All Requests</a>
+        <a href="scanner.html" class="nav-tab">QR Scanner</a>
+      </div>
+    </div>
+    <div class="nav-right">
+      <div class="nav-avatar" style="background:linear-gradient(135deg,#dc2626,#b91c1c);">A</div>
+      <div>
+        <span class="nav-user-name">Admin Panel</span>
+        <span class="nav-user-role">Administrator</span>
+      </div>
+      <a href="index.html" class="btn-logout">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+          <polyline points="16,17 21,12 16,7"/>
+          <line x1="21" y1="12" x2="9" y2="12"/>
+        </svg>
+        Logout
+      </a>
+    </div>
+  </nav>
+
+  <div class="page-wrapper">
+
+    <div class="page-header">
+      <h2 class="page-title">Admin Dashboard 🛡️</h2>
+      <p class="page-subtitle">Monitor and manage all student outpass requests</p>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-icon si-blue">👥</div>
+        <div class="stat-info"><span class="stat-value">24</span><span class="stat-label">Total Students</span></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon si-yellow">⏳</div>
+        <div class="stat-info"><span class="stat-value" id="s-pending">5</span><span class="stat-label">Pending</span></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon si-green">✅</div>
+        <div class="stat-info"><span class="stat-value">14</span><span class="stat-label">Approved Today</span></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon si-indigo">🚪</div>
+        <div class="stat-info"><span class="stat-value">8</span><span class="stat-label">Currently Outside</span></div>
+      </div>
+    </div>
+
+    <!-- Table Card -->
+    <div class="card">
+      <div class="card-title">
+        <span class="card-title-icon">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#1d4ed8" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+            <polyline points="14,2 14,8 20,8"/>
+          </svg>
+          All Outpass Requests
+        </span>
+        <button class="btn btn-sm btn-outline" onclick="exportCSV()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+            <polyline points="7,10 12,15 17,10"/>
+            <line x1="12" y1="15" x2="12" y2="3"/>
+          </svg>
+          Export CSV
+        </button>
+      </div>
+
+      <!-- Filter Bar -->
+      <div class="filter-bar">
+        <div class="search-box">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+          </svg>
+          <input type="text" id="search" placeholder="Search by name or roll no…" oninput="filterTable()" />
+        </div>
+        <select class="form-input filter-select no-icon" id="status-filter" onchange="filterTable()">
+          <option value="all">All Status</option>
+          <option value="pending">Pending</option>
+          <option value="approved">Approved</option>
+          <option value="rejected">Rejected</option>
+        </select>
+        <select class="form-input filter-select no-icon" id="ee-filter" onchange="filterTable()">
+          <option value="all">All Entry/Exit</option>
+          <option value="exit">Exited</option>
+          <option value="entry">Returned</option>
+          <option value="campus">On Campus</option>
+        </select>
+      </div>
+
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Student Name</th>
+              <th>Roll No.</th>
+              <th>Reason</th>
+              <th>Status</th>
+              <th>Exit Time</th>
+              <th>Return Time</th>
+              <th>Entry / Exit</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="table-body"></tbody>
+        </table>
+      </div>
+      <div id="no-results" style="display:none;text-align:center;padding:28px 0;color:#94a3b8;font-size:0.875rem;">
+        No records match your search.
+      </div>
+    </div>
+  </div>
+
+  <div id="toast"></div>
+
+  <script>
+    const data = [
+      { id:1,  name:'Aarav Singh',  roll:'21CS045', reason:'Medical Appointment', status:'approved', exit:'10:00 AM', ret:'2:00 PM',  ee:'exit'   },
+      { id:2,  name:'Priya Sharma', roll:'21CS022', reason:'Sports Event',        status:'pending',  exit:'1:00 PM',  ret:'5:00 PM',  ee:'campus' },
+      { id:3,  name:'Rohit Kumar',  roll:'21CS067', reason:'Family Emergency',    status:'rejected', exit:'9:00 AM',  ret:'12:00 PM', ee:'campus' },
+      { id:4,  name:'Sneha Patel',  roll:'21ME015', reason:'Personal Work',       status:'approved', exit:'11:30 AM', ret:'3:00 PM',  ee:'entry'  },
+      { id:5,  name:'Arjun Nair',   roll:'21EC034', reason:'Library Visit',       status:'pending',  exit:'2:00 PM',  ret:'4:30 PM',  ee:'campus' },
+      { id:6,  name:'Kavya Reddy',  roll:'21CS089', reason:'Medical Appointment', status:'approved', exit:'8:30 AM',  ret:'11:00 AM', ee:'exit'   },
+      { id:7,  name:'Vikram Joshi', roll:'21ME003', reason:'Sports Event',        status:'approved', exit:'12:00 PM', ret:'6:00 PM',  ee:'exit'   },
+      { id:8,  name:'Ananya Gupta', roll:'21CS101', reason:'Personal Work',       status:'pending',  exit:'3:30 PM',  ret:'5:00 PM',  ee:'campus' },
+      { id:9,  name:'Rahul Mehta',  roll:'21EC056', reason:'Family Emergency',    status:'rejected', exit:'10:30 AM', ret:'1:30 PM',  ee:'campus' },
+      { id:10, name:'Pooja Iyer',   roll:'21CS042', reason:'Library Visit',       status:'approved', exit:'4:00 PM',  ret:'6:00 PM',  ee:'entry'  },
+    ];
+
+    const eeMap = {
+      exit:   { label: '🔴 Exited',     cls: 'ee-exit'   },
+      entry:  { label: '🟢 Returned',   cls: 'ee-entry'  },
+      campus: { label: '🔵 On Campus',  cls: 'ee-campus' },
+    };
+
+    function showToast(msg, type='info') {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.className = `toast-${type} show`;
+      setTimeout(() => t.className = '', 3200);
+    }
+
+    function renderTable(rows) {
+      const tbody = document.getElementById('table-body');
+      const noRes = document.getElementById('no-results');
+      if (!rows.length) { tbody.innerHTML = ''; noRes.style.display = ''; return; }
+      noRes.style.display = 'none';
+      tbody.innerHTML = rows.map(r => {
+        const initials = r.name.split(' ').map(n => n[0]).join('');
+        const ee = eeMap[r.ee];
+        return `
+          <tr>
+            <td>
+              <div class="student-cell">
+                <div class="s-avatar">${initials}</div>
+                <div class="s-name">${r.name}</div>
+              </div>
+            </td>
+            <td><span class="s-roll">${r.roll}</span></td>
+            <td>${r.reason}</td>
+            <td><span class="badge badge-${r.status}">${r.status.charAt(0).toUpperCase()+r.status.slice(1)}</span></td>
+            <td style="color:#475569;">${r.exit}</td>
+            <td style="color:#475569;">${r.ret}</td>
+            <td><span class="ee-badge ${ee.cls}">${ee.label}</span></td>
+            <td>
+              <div class="action-btns">
+                ${r.status === 'pending' ? `
+                  <button class="btn btn-sm btn-success" onclick="approve(${r.id})">✓ Approve</button>
+                  <button class="btn btn-sm btn-danger"  onclick="reject(${r.id})">✕ Reject</button>
+                ` : `
+                  <button class="btn btn-sm btn-gray" onclick="toggleEE(${r.id})">Toggle E/E</button>
+                `}
+              </div>
+            </td>
+          </tr>`;
+      }).join('');
+      document.getElementById('s-pending').textContent = data.filter(d => d.status === 'pending').length;
+    }
+
+    function filterTable() {
+      const q   = document.getElementById('search').value.toLowerCase();
+      const sf  = document.getElementById('status-filter').value;
+      const eff = document.getElementById('ee-filter').value;
+      renderTable(data.filter(r =>
+        (r.name.toLowerCase().includes(q) || r.roll.toLowerCase().includes(q)) &&
+        (sf  === 'all' || r.status === sf) &&
+        (eff === 'all' || r.ee === eff)
+      ));
+    }
+
+    function approve(id) {
+      const r = data.find(x => x.id === id);
+      if (r) { r.status = 'approved'; filterTable(); showToast(`✅ Approved: ${r.name}`, 'success'); }
+    }
+    function reject(id) {
+      const r = data.find(x => x.id === id);
+      if (r) { r.status = 'rejected'; filterTable(); showToast(`❌ Rejected: ${r.name}`, 'error'); }
+    }
+    function toggleEE(id) {
+      const r = data.find(x => x.id === id);
+      if (r) {
+        const cycle = { campus: 'exit', exit: 'entry', entry: 'campus' };
+        r.ee = cycle[r.ee];
+        filterTable();
+        showToast(`Updated entry/exit for ${r.name}`, 'info');
+      }
+    }
+
+    function exportCSV() {
+      const rows = [['Student','Roll','Reason','Status','Exit','Return','Entry/Exit']];
+      data.forEach(r => rows.push([r.name, r.roll, r.reason, r.status, r.exit, r.ret, r.ee]));
+      const csv = rows.map(r => r.join(',')).join('\n');
+      const a = document.createElement('a');
+      a.href = 'data:text/csv,' + encodeURIComponent(csv);
+      a.download = 'outpass-requests.csv';
+      a.click();
+      showToast('📥 CSV exported!', 'success');
+    }
+
+    renderTable(data);
+  </script>
+</body>
+</html>

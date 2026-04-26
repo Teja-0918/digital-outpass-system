@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>QR Scanner — Digital Outpass System</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    body { background: #f8fafc; }
+
+    .scanner-page {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 36px 24px;
+    }
+
+    .scanner-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      align-items: start;
+    }
+
+    .scanner-card {
+      background: #fff;
+      border: 1px solid #e2e8f0;
+      border-radius: 14px;
+      padding: 32px;
+      box-shadow: 0 1px 6px rgba(0,0,0,0.06);
+    }
+
+    .scanner-header {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+    .scanner-header h3 { font-size: 1.05rem; font-weight: 700; color: #0f172a; }
+    .scanner-header p  { font-size: 0.82rem; color: #64748b; margin-top: 4px; }
+
+    /* How-to steps */
+    .steps-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 20px;
+    }
+    .step-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+    .step-num {
+      width: 26px; height: 26px;
+      border-radius: 50%;
+      background: #eff6ff;
+      color: #1d4ed8;
+      font-size: 0.75rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .step-text { font-size: 0.85rem; color: #475569; line-height: 1.5; }
+
+    /* Manual ID input */
+    .manual-section {
+      margin-top: 20px;
+      padding-top: 20px;
+      border-top: 1px solid #f1f5f9;
+    }
+    .manual-section h4 { font-size: 0.85rem; font-weight: 700; color: #0f172a; margin-bottom: 12px; }
+
+    @media (max-width: 768px) {
+      .scanner-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <a href="index.html" class="nav-brand">
+      <div class="nav-logo-box">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M5 12h14"/><path d="M12 5l7 7-7 7"/>
+        </svg>
+      </div>
+      <div class="nav-brand-text">
+        <span class="nav-brand-name">Digital Outpass System</span>
+        <span class="nav-brand-sub">QR Scanner Station</span>
+      </div>
+    </a>
+    <div class="nav-center">
+      <div class="nav-tabs">
+        <a href="admin.html" class="nav-tab">All Requests</a>
+        <a href="scanner.html" class="nav-tab active">QR Scanner</a>
+      </div>
+    </div>
+    <div class="nav-right">
+      <div class="nav-avatar" style="background:linear-gradient(135deg,#dc2626,#b91c1c);">A</div>
+      <div>
+        <span class="nav-user-name">Admin Panel</span>
+        <span class="nav-user-role">Administrator</span>
+      </div>
+      <a href="index.html" class="btn-logout">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+          <polyline points="16,17 21,12 16,7"/>
+          <line x1="21" y1="12" x2="9" y2="12"/>
+        </svg>
+        Logout
+      </a>
+    </div>
+  </nav>
+
+  <div class="scanner-page">
+
+    <div class="page-header">
+      <h2 class="page-title">QR Scanner Station <span>📷</span></h2>
+      <p class="page-subtitle">Scan student outpass QR codes at campus entry and exit points</p>
+    </div>
+
+    <div class="scanner-grid">
+
+      <!-- Scanner Column -->
+      <div>
+        <div class="scanner-card">
+          <div class="scanner-header">
+            <h3>Scan QR Code</h3>
+            <p>Position the student's QR code inside the frame</p>
+          </div>
+
+          <div class="scanner-outer">
+
+            <!-- Scanner Frame -->
+            <div class="scanner-frame">
+              <div class="sc-corner sc-tl"></div>
+              <div class="sc-corner sc-tr"></div>
+              <div class="sc-corner sc-bl"></div>
+              <div class="sc-corner sc-br"></div>
+              <div class="scanner-line"></div>
+              <div class="scanner-help">
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#cbd5e1" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
+                  <rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
+                </svg>
+                <span>Align QR code here</span>
+              </div>
+            </div>
+
+            <!-- Buttons -->
+            <div style="display:flex;gap:10px;width:100%;max-width:300px;">
+              <button class="btn btn-primary btn-full" onclick="simulateScan()">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
+                  <rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
+                </svg>
+                Simulate Scan
+              </button>
+              <button class="btn btn-gray" onclick="clearResult()">Clear</button>
+            </div>
+
+          </div>
+
+          <!-- Manual ID lookup -->
+          <div class="manual-section">
+            <h4>Or lookup by Roll No.</h4>
+            <div style="display:flex;gap:8px;">
+              <input type="text" id="manual-id" class="form-input no-icon" placeholder="e.g. 21CS045" style="flex:1;" />
+              <button class="btn btn-outline" onclick="manualLookup()">Search</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Instructions -->
+        <div class="scanner-card" style="margin-top:20px;">
+          <div style="font-size:0.875rem;font-weight:700;color:#0f172a;margin-bottom:12px;">How to Use</div>
+          <ul class="steps-list">
+            <li class="step-item">
+              <div class="step-num">1</div>
+              <div class="step-text">Ask the student to open their Digital Outpass app and show the QR code.</div>
+            </li>
+            <li class="step-item">
+              <div class="step-num">2</div>
+              <div class="step-text">Position the QR code in front of the scanner camera within the frame.</div>
+            </li>
+            <li class="step-item">
+              <div class="step-num">3</div>
+              <div class="step-text">Verify the student details and outpass status shown on screen.</div>
+            </li>
+            <li class="step-item">
+              <div class="step-num">4</div>
+              <div class="step-text">Click <strong>Mark Entry</strong> or <strong>Mark Exit</strong> to record the movement.</div>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Result Column -->
+      <div>
+        <div class="scanner-card" style="min-height: 320px; display:flex;align-items:center;justify-content:center;" id="result-card">
+          <div id="result-empty" style="text-align:center;color:#94a3b8;">
+            <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="#e2e8f0" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom:12px;">
+              <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
+              <rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
+            </svg>
+            <p style="font-weight:600;font-size:0.9rem;color:#cbd5e1;">Scan Result</p>
+            <p style="font-size:0.8rem;margin-top:4px;">Results will appear here after scanning</p>
+          </div>
+
+          <div id="result-data" style="display:none;width:100%;">
+            <div class="scan-result" id="result-box"></div>
+            <div style="display:flex;gap:10px;margin-top:16px;">
+              <button class="btn btn-success btn-full" onclick="markAction('entry')">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20,6 9,17 4,12"/></svg>
+                Mark Entry
+              </button>
+              <button class="btn btn-danger btn-full" onclick="markAction('exit')">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+                </svg>
+                Mark Exit
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Today's Activity -->
+        <div class="scanner-card" style="margin-top:20px;">
+          <div style="font-size:0.875rem;font-weight:700;color:#0f172a;margin-bottom:14px;">Today's Activity Log</div>
+          <div id="activity-log">
+            <div class="request-item">
+              <div class="req-left">
+                <div class="req-icon-box ri-red">🔴</div>
+                <div>
+                  <div class="req-reason">Kavya Reddy <span class="s-roll" style="margin-left:6px;">21CS089</span></div>
+                  <div class="req-meta">Exited at 8:35 AM · Medical Appointment</div>
+                </div>
+              </div>
+              <span class="badge badge-info">Exit</span>
+            </div>
+            <div class="request-item">
+              <div class="req-left">
+                <div class="req-icon-box ri-green">🟢</div>
+                <div>
+                  <div class="req-reason">Sneha Patel <span class="s-roll" style="margin-left:6px;">21ME015</span></div>
+                  <div class="req-meta">Returned at 3:05 PM · Personal Work</div>
+                </div>
+              </div>
+              <span class="badge badge-approved">Entry</span>
+            </div>
+            <div class="request-item">
+              <div class="req-left">
+                <div class="req-icon-box ri-red">🔴</div>
+                <div>
+                  <div class="req-reason">Aarav Singh <span class="s-roll" style="margin-left:6px;">21CS045</span></div>
+                  <div class="req-meta">Exited at 10:02 AM · Medical Appointment</div>
+                </div>
+              </div>
+              <span class="badge badge-info">Exit</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div id="toast"></div>
+
+  <script>
+    const samples = [
+      { name: 'Aarav Singh',  roll: '21CS045', reason: 'Medical Appointment', exit: '10:00 AM', ret: '2:00 PM',  status: 'approved' },
+      { name: 'Kavya Reddy',  roll: '21CS089', reason: 'Medical Appointment', exit: '8:30 AM',  ret: '11:00 AM', status: 'approved' },
+      { name: 'Vikram Joshi', roll: '21ME003', reason: 'Sports Event',        exit: '12:00 PM', ret: '6:00 PM',  status: 'approved' },
+    ];
+    let idx = 0;
+
+    function showToast(msg, type='info') {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.className = `toast-${type} show`;
+      setTimeout(() => t.className = '', 3200);
+    }
+
+    function renderResult(s) {
+      const now = new Date().toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' });
+      document.getElementById('result-empty').style.display = 'none';
+      const rd = document.getElementById('result-data');
+      rd.style.display = '';
+
+      const card = document.getElementById('result-card');
+      card.style.alignItems = 'flex-start';
+      card.style.justifyContent = 'flex-start';
+
+      document.getElementById('result-box').innerHTML = `
+        <div class="scan-result-header">
+          <span style="font-size:1.5rem;">✅</span>
+          <div>
+            <div class="scan-result-title">Valid Outpass — Scanned at ${now}</div>
+          </div>
+        </div>
+        <div class="scan-result-body">
+          <div class="scan-row"><span>Student Name</span><strong>${s.name}</strong></div>
+          <div class="scan-row"><span>Roll No.</span><strong>${s.roll}</strong></div>
+          <div class="scan-row"><span>Reason</span><strong>${s.reason}</strong></div>
+          <div class="scan-row"><span>Exit Time</span><strong>${s.exit}</strong></div>
+          <div class="scan-row"><span>Return Time</span><strong>${s.ret}</strong></div>
+          <div class="scan-row"><span>Status</span><span class="badge badge-approved">Approved</span></div>
+        </div>
+      `;
+    }
+
+    function simulateScan() {
+      const s = samples[idx % samples.length]; idx++;
+      renderResult(s);
+      showToast(`📷 QR Scanned — ${s.name}`, 'success');
+    }
+
+    function manualLookup() {
+      const val = document.getElementById('manual-id').value.trim().toUpperCase();
+      const found = samples.find(s => s.roll.toUpperCase() === val);
+      if (found) { renderResult(found); showToast(`🔍 Found: ${found.name}`, 'success'); }
+      else { showToast('⚠️ No record found for this Roll No.', 'warning'); }
+    }
+
+    function clearResult() {
+      document.getElementById('result-empty').style.display = '';
+      document.getElementById('result-data').style.display = 'none';
+      const card = document.getElementById('result-card');
+      card.style.alignItems = 'center';
+      card.style.justifyContent = 'center';
+      document.getElementById('manual-id').value = '';
+    }
+
+    function markAction(type) {
+      const label = type === 'entry' ? 'Entry' : 'Exit';
+      showToast(`✅ ${label} recorded successfully`, type === 'entry' ? 'success' : 'info');
+      clearResult();
+    }
+  </script>
+</body>
+</html>

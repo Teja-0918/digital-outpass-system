@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Parent Dashboard — Digital Outpass System</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    body { background: #f8fafc; }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <a href="index.html" class="nav-brand">
+      <div class="nav-logo-box">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M5 12h14"/><path d="M12 5l7 7-7 7"/>
+        </svg>
+      </div>
+      <div class="nav-brand-text">
+        <span class="nav-brand-name">Digital Outpass System</span>
+        <span class="nav-brand-sub">Parent Dashboard</span>
+      </div>
+    </a>
+    <div class="nav-right">
+      <div class="nav-avatar" style="background:linear-gradient(135deg,#16a34a,#0f766e);">R</div>
+      <div>
+        <span class="nav-user-name">Rajesh Singh</span>
+        <span class="nav-user-role">Parent · Guardian</span>
+      </div>
+      <a href="index.html" class="btn-logout">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+          <polyline points="16,17 21,12 16,7"/>
+          <line x1="21" y1="12" x2="9" y2="12"/>
+        </svg>
+        Logout
+      </a>
+    </div>
+  </nav>
+
+  <div class="page-wrapper">
+
+    <div class="page-header">
+      <h2 class="page-title">Parent Dashboard <span>👨‍👩‍👧</span></h2>
+      <p class="page-subtitle">Review and respond to your child's outpass requests</p>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-icon si-yellow">📬</div>
+        <div class="stat-info">
+          <span class="stat-value" id="pending-count">2</span>
+          <span class="stat-label">Awaiting Approval</span>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon si-green">✅</div>
+        <div class="stat-info">
+          <span class="stat-value">4</span>
+          <span class="stat-label">Approved Total</span>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon si-red">🚫</div>
+        <div class="stat-info">
+          <span class="stat-value">1</span>
+          <span class="stat-label">Rejected Total</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid-2">
+
+      <!-- Pending Requests -->
+      <div class="card col-full" style="max-width:100%;">
+        <div class="card-title">
+          <span class="card-title-icon">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#1d4ed8" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/>
+              <line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+            </svg>
+            Pending Requests
+          </span>
+          <span class="badge badge-info" id="pending-badge">2 New</span>
+        </div>
+        <div id="pending-list"></div>
+      </div>
+
+      <!-- History -->
+      <div class="card col-full">
+        <div class="card-title">
+          <span class="card-title-icon">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#1d4ed8" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20z"/>
+              <polyline points="12 6 12 12 16 14"/>
+            </svg>
+            Approval History
+          </span>
+        </div>
+        <div id="history-list"></div>
+      </div>
+
+    </div>
+  </div>
+
+  <div id="toast"></div>
+
+  <script>
+    const requests = [
+      { id: 1, student: 'Aarav Singh', roll: '21CS045', reason: 'Medical Appointment', exit: '10:00 AM', ret: '2:00 PM',  date: 'Apr 7, 2026', status: 'pending', note: 'Regular checkup at City Hospital.' },
+      { id: 2, student: 'Aarav Singh', roll: '21CS045', reason: 'Sports Event',        exit: '1:00 PM',  ret: '5:00 PM',  date: 'Apr 7, 2026', status: 'pending', note: 'Inter-school cricket tournament.' },
+    ];
+    const historyData = [
+      { reason: 'Library Visit',    exit: '3:00 PM',  ret: '5:30 PM',  status: 'approved', date: 'Apr 5, 2026' },
+      { reason: 'Family Emergency', exit: '9:00 AM',  ret: '12:00 PM', status: 'rejected', date: 'Apr 4, 2026' },
+      { reason: 'Personal Work',    exit: '11:00 AM', ret: '1:00 PM',  status: 'approved', date: 'Apr 3, 2026' },
+    ];
+
+    function showToast(msg, type='info') {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.className = `toast-${type} show`;
+      setTimeout(() => t.className = '', 3200);
+    }
+
+    function renderPending() {
+      const pending = requests.filter(r => r.status === 'pending');
+      document.getElementById('pending-count').textContent = pending.length;
+      document.getElementById('pending-badge').textContent = `${pending.length} New`;
+
+      const el = document.getElementById('pending-list');
+      if (!pending.length) {
+        el.innerHTML = `
+          <div style="text-align:center;padding:30px 0;color:#94a3b8;">
+            <div style="font-size:2rem;margin-bottom:8px;">🎉</div>
+            <p>No pending requests — all caught up!</p>
+          </div>`;
+        return;
+      }
+      el.innerHTML = pending.map(r => `
+        <div class="parent-card" id="pc-${r.id}">
+          <div class="parent-card-header">
+            <div>
+              <div class="parent-student-name">🎓 ${r.student}</div>
+              <div style="font-size:0.75rem;color:#94a3b8;margin-top:2px;">Roll No: ${r.roll}</div>
+            </div>
+            <span class="badge badge-pending">Pending</span>
+          </div>
+          <div class="parent-detail-grid">
+            <div class="parent-detail"><span class="pd-key">Reason</span><span class="pd-value">${r.reason}</span></div>
+            <div class="parent-detail"><span class="pd-key">Date</span><span class="pd-value">${r.date}</span></div>
+            <div class="parent-detail"><span class="pd-key">Exit Time</span><span class="pd-value">${r.exit}</span></div>
+            <div class="parent-detail"><span class="pd-key">Return Time</span><span class="pd-value">${r.ret}</span></div>
+          </div>
+          ${r.note ? `<div class="note-box">📝 ${r.note}</div>` : ''}
+          <div class="parent-actions">
+            <button class="btn btn-success" onclick="action(${r.id},'approved')">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20,6 9,17 4,12"/></svg>
+              Approve
+            </button>
+            <button class="btn btn-danger" onclick="action(${r.id},'rejected')">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+              </svg>
+              Reject
+            </button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function renderHistory() {
+      const settled = requests.filter(r => r.status !== 'pending');
+      const all = [...settled.map(r => ({ reason: r.reason, exit: r.exit, ret: r.ret, status: r.status, date: r.date })), ...historyData];
+      const icons = { approved: '✅', rejected: '❌' };
+      const iCls  = { approved: 'ri-green', rejected: 'ri-red' };
+      document.getElementById('history-list').innerHTML = all.map(r => `
+        <div class="request-item">
+          <div class="req-left">
+            <div class="req-icon-box ${iCls[r.status]}">${icons[r.status]}</div>
+            <div>
+              <div class="req-reason">${r.reason}</div>
+              <div class="req-meta">${r.date} &nbsp;·&nbsp; ${r.exit} – ${r.ret}</div>
+            </div>
+          </div>
+          <span class="badge badge-${r.status}">${r.status.charAt(0).toUpperCase()+r.status.slice(1)}</span>
+        </div>
+      `).join('');
+    }
+
+    function action(id, status) {
+      const r = requests.find(x => x.id === id);
+      if (r) r.status = status;
+      renderPending();
+      renderHistory();
+      showToast(
+        status === 'approved' ? `✅ Request approved for ${r.student}` : `❌ Request rejected for ${r.student}`,
+        status === 'approved' ? 'success' : 'error'
+      );
+    }
+
+    renderPending();
+    renderHistory();
+  </script>
+</body>
+</html>

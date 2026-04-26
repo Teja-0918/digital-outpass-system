@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Dashboard — VNR VJIET Digital Outpass System</title>
+<link rel="stylesheet" href="app.css"/>
+</head>
+<body>
+<div class="strip"><span><span class="strip-dot"></span>NAAC A+ · Autonomous · JNTUH · VNR VJIET Bachupally</span><span class="strip-r">Digital Outpass System</span></div>
+<nav class="nav">
+  <a href="dashboard.html" class="brand">
+    <svg class="logo-s" viewBox="0 0 52 52" fill="none"><rect width="52" height="52" rx="10" fill="#c0182a"/><path d="M26 8L40 13V27C40 35 26 44 26 44S12 35 12 27V13Z" fill="#fff" opacity=".95"/><text x="17" y="33" font-family="Poppins" font-weight="800" font-size="18" fill="#c0182a" letter-spacing="-1">VNR</text><rect x="12" y="38" width="28" height="3" rx="1.5" fill="#c9980a"/><circle cx="26" cy="9" r="2.5" fill="#c9980a"/></svg>
+    <div><div class="bn">VNR VJIET</div><div class="bs">Vallurupalli Nageswara Rao Vignana Jyothi Institute of Engineering &amp; Technology</div><div class="bt">✦ Empowering Minds, Building Futures ✦</div></div>
+  </a>
+  <div class="nav-r" id="nav-r"></div>
+</nav>
+
+<div class="pg" style="flex:1">
+  <div class="wel">
+    <div><h2>Welcome back, <span id="d-fname"></span> 👋</h2><p>Manage your outpass requests from your dashboard</p></div>
+    <div class="wel-date"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg><span id="d-date"></span></div>
+  </div>
+
+  <div class="stats">
+    <div class="stat" style="border-left-color:#3b82f6"><div class="stat-ic" style="background:#eff6ff">📋</div><div><div class="sv" id="ds-all">0</div><div class="sl">Total</div></div></div>
+    <div class="stat" style="border-left-color:var(--gr)"><div class="stat-ic" style="background:var(--grl)">✅</div><div><div class="sv" id="ds-app">0</div><div class="sl">Approved</div></div></div>
+    <div class="stat" style="border-left-color:var(--am)"><div class="stat-ic" style="background:var(--aml)">⏳</div><div><div class="sv" id="ds-pen">0</div><div class="sl">Pending</div></div></div>
+    <div class="stat" style="border-left-color:var(--r)"><div class="stat-ic" style="background:var(--rl)">❌</div><div><div class="sv" id="ds-rej">0</div><div class="sl">Rejected</div></div></div>
+  </div>
+
+  <div class="dg">
+    <!-- Student Details -->
+    <div>
+      <div class="dc">
+        <div class="dc-h"><div class="dc-av" id="d-av"></div><div class="dc-nm" id="d-nm"></div><div class="dc-rl" id="d-rl"></div><div class="dc-pill"><span class="strip-dot" style="margin:0"></span> Active Student</div></div>
+        <div class="gd"></div>
+        <div class="dc-b">
+          <div class="dr"><div class="dk">Roll No.</div><div class="dv" id="d-roll"></div></div>
+          <div class="dr"><div class="dk">Branch</div><div class="dv" id="d-br"></div></div>
+          <div class="dr"><div class="dk">Section</div><div class="dv" id="d-sec"></div></div>
+          <div class="dr"><div class="dk">Year</div><div class="dv" id="d-yr"></div></div>
+          <div class="dr"><div class="dk">Room</div><div class="dv" id="d-rm"></div></div>
+        </div>
+      </div>
+      <a href="history.html" class="btn" style="margin-top:14px;text-decoration:none">📋 View Outpass History</a>
+    </div>
+
+    <!-- Pass Options -->
+    <div>
+      <div style="font-size:.95rem;font-weight:700;margin-bottom:14px">🎫 Apply for a Pass</div>
+      <div class="pg-cards">
+        <div class="pc out" onclick="window.location.href='outpass.html?type=out'">
+          <div class="pc-ic pc-out">🚪</div>
+          <h3>Out Pass</h3>
+          <p>Short-duration campus exit during college hours</p>
+          <div class="pc-chip cp-out">Apply Now →</div>
+        </div>
+        <div class="pc home" onclick="window.location.href='outpass.html?type=home'">
+          <div class="pc-ic pc-home">🏠</div>
+          <h3>Home Pass</h3>
+          <p>Travel home for holidays, emergencies, or personal reasons</p>
+          <div class="pc-chip cp-home">Apply Now →</div>
+        </div>
+      </div>
+
+      <!-- Recent History Preview -->
+      <div style="background:var(--w);border:1px solid var(--f200);border-radius:14px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.04);margin-top:8px">
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:14px 20px;border-bottom:1px solid var(--f100)">
+          <span style="font-size:.88rem;font-weight:700">📋 Recent Requests</span>
+          <a href="history.html" style="font-size:.72rem;font-weight:600;color:var(--r);text-decoration:none;border:1px solid var(--rb);background:var(--rl);border-radius:6px;padding:3px 10px">View All</a>
+        </div>
+        <div id="recent-list" style="padding:4px 0"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer class="foot">&copy; 2026 <strong>VNR VJIET</strong> · Digital Outpass System · All rights reserved.</footer>
+<div id="toast"></div>
+
+<script>
+const API = 'http://localhost:5000';
+const user = JSON.parse(localStorage.getItem('vnr_user') || 'null');
+const token = localStorage.getItem('vnr_token');
+
+if (!user || !token) { window.location.href = 'login.html'; }
+
+let reqs = [];
+
+function toast(m,t='t-ok'){const e=document.getElementById('toast');e.textContent=m;e.className=`show ${t}`;clearTimeout(e._t);e._t=setTimeout(()=>e.className='',3200)}
+
+function renderDashboard() {
+  const ini = user.name.split(' ').map(n => n[0]).join('');
+  
+  /* Navbar */
+  document.getElementById('nav-r').innerHTML = `<div class="nav-av">${ini}</div><div><div class="nav-nm">${user.name}</div><div class="nav-rl">${user.roll} · ${user.branch}-${user.section}</div></div><button class="btn-o" onclick="logout()">Logout</button>`;
+
+  /* Welcome */
+  document.getElementById('d-fname').textContent = user.name.split(' ')[0];
+  document.getElementById('d-date').textContent = new Date().toLocaleDateString('en-IN', { weekday:'short', day:'numeric', month:'long', year:'numeric' });
+
+  /* Detail card */
+  document.getElementById('d-av').textContent = ini;
+  document.getElementById('d-nm').textContent = user.name;
+  document.getElementById('d-rl').textContent = user.roll;
+  document.getElementById('d-roll').textContent = user.roll;
+  document.getElementById('d-br').textContent = user.branch;
+  document.getElementById('d-sec').textContent = 'Section ' + user.section;
+  document.getElementById('d-yr').textContent = user.year || '3rd Year';
+  document.getElementById('d-rm').textContent = user.room;
+
+  /* Stats */
+  document.getElementById('ds-all').textContent = reqs.length;
+  document.getElementById('ds-app').textContent = reqs.filter(r => r.status === 'approved').length;
+  document.getElementById('ds-pen').textContent = reqs.filter(r => r.status === 'pending').length;
+  document.getElementById('ds-rej').textContent = reqs.filter(r => r.status === 'rejected').length;
+
+  /* Recent History */
+  const SM = { approved:{c:'b-app',l:'✓ Approved'}, pending:{c:'b-pen',l:'⏳ Pending'}, rejected:{c:'b-rej',l:'✕ Rejected'}, used:{c:'b-used',l:'🏷 Used'} };
+  const recent = reqs.slice(0, 3);
+  document.getElementById('recent-list').innerHTML = recent.length
+    ? recent.map(r => {
+        const s = SM[r.status] || SM.pending;
+        return `<div style="display:flex;align-items:center;justify-content:space-between;padding:10px 20px;border-bottom:1px solid var(--f50);gap:10px">
+          <div style="display:flex;align-items:center;gap:10px">
+            <div style="width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.95rem;background:${r.type==='Home Pass'?'var(--gl)':'var(--rl)'}">${r.type==='Home Pass'?'🏠':'🚪'}</div>
+            <div><div style="font-size:.8rem;font-weight:600">${r.purpose}</div><div style="font-size:.68rem;color:var(--f400)">${r.date}</div></div>
+          </div>
+          <span class="badge ${s.c}">${s.l}</span>
+        </div>`;
+      }).join('')
+    : '<div style="text-align:center;padding:20px;color:var(--f400);font-size:.82rem">No requests yet</div>';
+}
+
+function logout() {
+  localStorage.removeItem('vnr_user');
+  localStorage.removeItem('vnr_token');
+  window.location.href = 'login.html';
+}
+
+async function loadHistory() {
+  try {
+    const res = await fetch(`${API}/api/student/history/${user.id}`, {
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+    const data = await res.json();
+    if (res.ok) {
+      reqs = data.records.map(r => {
+        let st = r.status.toLowerCase();
+        if (st === 'approved' && r.scanCount > 0) st = 'used';
+
+        return {
+          id: r._id,
+          date: new Date(r.createdAt).toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'}),
+          out: r.outTime,
+          inn: r.inTime,
+          purpose: r.purpose,
+          type: r.type === 'homepass' ? 'Home Pass' : 'Out Pass',
+          status: st
+        };
+      });
+      renderDashboard(); // Re-render with fetched data
+    } else {
+      toast('❌ Failed to load stats', 't-err');
+    }
+  } catch(err) {
+    toast('⚠️ Cannot reach server.', 't-warn');
+  }
+}
+
+if (user && token) {
+  renderDashboard();
+  loadHistory();
+}
+</script>
+</body>
+</html>

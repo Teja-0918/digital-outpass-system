@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>VNR VJIET Digital Outpass System</title>
+<link rel="stylesheet" href="app.css"/>
+<script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+</head>
+<body>
+
+<!-- ══ STRIP ══ -->
+<div class="strip" id="strip"><span><span class="strip-dot"></span>NAAC A+ · Autonomous · JNTUH · VNR VJIET Bachupally</span><span class="strip-r">Digital Outpass System</span></div>
+
+<!-- ══ NAVBAR ══ -->
+<nav class="nav" id="navbar">
+  <div class="brand" onclick="go('dashboard')">
+    <svg class="logo-s" viewBox="0 0 52 52" fill="none"><rect width="52" height="52" rx="10" fill="#c0182a"/><path d="M26 8L40 13V27C40 35 26 44 26 44S12 35 12 27V13Z" fill="#fff" opacity=".95"/><text x="17" y="33" font-family="Poppins" font-weight="800" font-size="18" fill="#c0182a" letter-spacing="-1">VNR</text><rect x="12" y="38" width="28" height="3" rx="1.5" fill="#c9980a"/><circle cx="26" cy="9" r="2.5" fill="#c9980a"/></svg>
+    <div><div class="bn">VNR VJIET</div><div class="bs">Vallurupalli Nageswara Rao Vignana Jyothi Institute of Engineering &amp; Technology</div><div class="bt">✦ Empowering Minds, Building Futures ✦</div></div>
+  </div>
+  <div class="nav-r" id="nav-r"></div>
+</nav>
+
+<!-- ═══════════════════════════════════════════
+     SECTION: LOGIN
+═══════════════════════════════════════════ -->
+<section class="sec active" id="sec-login">
+  <div class="hero"><div class="hero-pill">● Official Portal</div><h1>Digital <span>Outpass</span> System</h1><p>Smart QR-Based Exit Management for Students</p><div class="hero-div"><div class="hd-l"></div><div class="hd-d"></div><div class="hd-l"></div></div></div>
+  <div class="pg-center">
+    <div class="card">
+      <div class="card-bar"></div>
+      <div class="cb">
+        <div class="ch"><div class="ch-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></div><div><h2>Sign In to Your Account</h2><p>Access your outpass dashboard</p></div></div>
+        <span class="fl" style="color:var(--f400);letter-spacing:.7px;text-transform:uppercase;font-size:.68rem">Select Role</span>
+        <div class="rtabs" id="login-tabs">
+          <button class="rt active" data-role="Student" onclick="setRole(this)"><span class="ri">🎓</span>Student</button>
+          <button class="rt" data-role="Parent" onclick="setRole(this)"><span class="ri">👨‍👩‍👧</span>Parent</button>
+          <button class="rt" data-role="Admin" onclick="setRole(this)"><span class="ri">🛡️</span>Admin</button>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:18px"><div style="flex:1;height:1px;background:var(--f200)"></div><span style="font-size:.7rem;color:var(--f400)">Enter credentials</span><div style="flex:1;height:1px;background:var(--f200)"></div></div>
+        <form onsubmit="return doLogin(event)">
+          <div class="fld"><label class="fl" id="l-uid">Student Roll Number <span class="req">*</span></label><div class="iw"><span class="fi"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span><input type="text" id="l-user" class="fin" placeholder="e.g. 22VV1A0501"/></div><div class="fe" id="le-user">Please enter your ID</div></div>
+          <div class="fld"><label class="fl">Password <span class="req">*</span></label><div class="iw"><span class="fi"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></span><input type="password" id="l-pass" class="fin" placeholder="Enter your password"/></div><div class="fe" id="le-pass">Please enter your password</div></div>
+          <div style="display:flex;justify-content:space-between;align-items:center;font-size:.78rem;margin-bottom:20px"><label style="display:flex;align-items:center;gap:6px;color:var(--f500);cursor:pointer"><input type="checkbox" style="accent-color:var(--r)"/> Remember me</label><a class="link" style="font-size:.78rem">Forgot Password?</a></div>
+          <button type="submit" class="btn" id="l-btn">→ Login to Portal</button>
+        </form>
+        <div class="tc">New student? <a class="link" onclick="go('register')">Register here →</a></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     SECTION: REGISTER
+═══════════════════════════════════════════ -->
+<section class="sec" id="sec-register">
+  <div class="hero"><div class="hero-pill">● New Registration</div><h1>Student <span>Registration</span></h1><p>Digital Outpass System · VNR VJIET</p><div class="hero-div"><div class="hd-l"></div><div class="hd-d"></div><div class="hd-l"></div></div></div>
+  <div class="pg-center">
+    <div class="card card-640">
+      <div class="card-bar"></div>
+      <div class="cb">
+        <div class="ch"><div class="ch-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><div><h2>Create Your Account</h2><p>Fill in details to register</p></div></div>
+        <form onsubmit="return doRegister(event)">
+          <div class="sh">Academic Details</div>
+          <div class="fr"><div class="fld"><label class="fl">Roll Number <span class="req">*</span></label><div class="iw"><span class="fi"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg></span><input type="text" id="r-roll" class="fin" placeholder="e.g. 22VV1A0501"/></div><div class="fe" id="re-roll">Enter roll number</div></div>
+          <div class="fld"><label class="fl">Full Name <span class="req">*</span></label><div class="iw"><span class="fi"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span><input type="text" id="r-name" class="fin" placeholder="As per records"/></div><div class="fe" id="re-name">Enter full name</div></div></div>
+          <div class="fr"><div class="fld"><label class="fl">Branch <span class="req">*</span></label><div class="iw"><span class="fi"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></span><select id="r-branch" class="fin"><option value="">Select</option><option>CSE</option><option>ECE</option><option>EEE</option><option>IT</option><option>MECH</option><option>CIVIL</option></select></div></div>
+          <div class="fld"><label class="fl">Section <span class="req">*</span></label><div class="iw"><span class="fi"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></span><select id="r-sec" class="fin"><option value="">Select</option><option>A</option><option>B</option><option>C</option><option>D</option></select></div></div></div>
+          <div class="fr"><div class="fld"><label class="fl">Room Number <span class="req">*</span></label><div class="iw"><span class="fi"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span><input type="text" id="r-room" class="fin" placeholder="e.g. CS-301"/></div></div>
+          <div class="fld"><label class="fl">Year <span class="req">*</span></label><div class="iw"><span class="fi"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/></svg></span><select id="r-year" class="fin"><option value="">Select</option><option>1st Year</option><option>2nd Year</option><option>3rd Year</option><option>4th Year</option></select></div></div></div>
+          <div class="sh">Security Credentials</div>
+          <div class="fld"><label class="fl">Password <span class="req">*</span></label><div class="iw"><span class="fi"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></span><input type="password" id="r-pass" class="fin" placeholder="Min 8 characters" oninput="pwStr()"/></div><div class="pws" id="pws"><div class="pws-bar"><div class="pws-fill" id="pws-fill"></div></div><div class="pws-txt" id="pws-txt"></div></div></div>
+          <div class="fld"><label class="fl">Confirm Password <span class="req">*</span></label><div class="iw"><span class="fi"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></span><input type="password" id="r-conf" class="fin" placeholder="Re-enter password"/></div><div class="fe" id="re-conf">Passwords do not match</div></div>
+          <div class="note"><span>⚠️</span><p><strong>Important:</strong> Your parent's phone number is already registered with the administration for security purposes.</p></div>
+          <button type="submit" class="btn" id="r-btn">Register Now</button>
+        </form>
+        <div class="tc">Already registered? <a class="link" onclick="go('login')">Login here →</a></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     SECTION: DASHBOARD
+═══════════════════════════════════════════ -->
+<section class="sec" id="sec-dashboard">
+  <div class="pg">
+    <div class="wel"><div><h2>Welcome back, <span id="d-fname"></span> 👋</h2><p>Manage your outpass requests from your dashboard</p></div><div class="wel-date"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg><span id="d-date"></span></div></div>
+    <div class="stats">
+      <div class="stat" style="border-left-color:#3b82f6"><div class="stat-ic" style="background:#eff6ff">📋</div><div><div class="sv" id="ds-all">0</div><div class="sl">Total</div></div></div>
+      <div class="stat" style="border-left-color:var(--gr)"><div class="stat-ic" style="background:var(--grl)">✅</div><div><div class="sv" id="ds-app">0</div><div class="sl">Approved</div></div></div>
+      <div class="stat" style="border-left-color:var(--am)"><div class="stat-ic" style="background:var(--aml)">⏳</div><div><div class="sv" id="ds-pen">0</div><div class="sl">Pending</div></div></div>
+      <div class="stat" style="border-left-color:var(--r)"><div class="stat-ic" style="background:var(--rl)">❌</div><div><div class="sv" id="ds-rej">0</div><div class="sl">Rejected</div></div></div>
+    </div>
+    <div class="dg">
+      <div>
+        <div class="dc"><div class="dc-h"><div class="dc-av" id="d-av"></div><div class="dc-nm" id="d-nm"></div><div class="dc-rl" id="d-rl2"></div><div class="dc-pill"><span class="strip-dot" style="margin:0"></span> Active Student</div></div><div class="gd"></div><div class="dc-b"><div class="dr"><div class="dk">Roll No.</div><div class="dv" id="d-roll2"></div></div><div class="dr"><div class="dk">Branch</div><div class="dv" id="d-br2"></div></div><div class="dr"><div class="dk">Section</div><div class="dv" id="d-sec2"></div></div><div class="dr"><div class="dk">Year</div><div class="dv" id="d-yr2"></div></div><div class="dr"><div class="dk">Room</div><div class="dv" id="d-rm2"></div></div></div></div>
+        <button class="btn" style="margin-top:14px" onclick="go('history')">📋 View Outpass History</button>
+      </div>
+      <div>
+        <div style="font-size:.95rem;font-weight:700;margin-bottom:14px">🎫 Apply for a Pass</div>
+        <div class="pg-cards">
+          <div class="pc out" onclick="startOutpass('Out Pass')"><div class="pc-ic pc-out">🚪</div><h3>Out Pass</h3><p>Short-duration campus exit during college hours</p><div class="pc-chip cp-out">Apply Now →</div></div>
+          <div class="pc home" onclick="startOutpass('Home Pass')"><div class="pc-ic pc-home">🏠</div><h3>Home Pass</h3><p>Travel home for holidays, emergencies or personal reasons</p><div class="pc-chip cp-home">Apply Now →</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     SECTION: OUTPASS (4 steps)
+═══════════════════════════════════════════ -->
+<section class="sec" id="sec-outpass">
+  <div class="pg-center">
+    <div class="stepper" id="stepper">
+      <div class="stp on" id="s1"><div class="stp-c">1</div><div class="stp-l">Form</div></div><div class="stp-ln" id="ln1"></div>
+      <div class="stp" id="s2"><div class="stp-c">2</div><div class="stp-l">Parent</div></div><div class="stp-ln" id="ln2"></div>
+      <div class="stp" id="s3"><div class="stp-c">3</div><div class="stp-l">OTP</div></div><div class="stp-ln" id="ln3"></div>
+      <div class="stp" id="s4"><div class="stp-c">4</div><div class="stp-l">QR Code</div></div>
+    </div>
+    <div class="card card-640">
+      <div class="card-bar"></div>
+      <div class="cb">
+        <!-- Step 1 -->
+        <div class="step-panel active" id="op1">
+          <div class="ch"><div class="ch-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div><div><h2 id="op-title">Out Pass Request</h2><p>Fill in exit & return details</p></div></div>
+          <div class="sh">Timing</div>
+          <div class="fr"><div class="fld"><label class="fl">Out Time <span class="req">*</span></label><div class="iw"><span class="fi"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></span><input type="datetime-local" id="op-out" class="fin"/></div><div class="fe" id="oe-out">Select out time</div></div>
+          <div class="fld"><label class="fl">In Time <span class="req">*</span></label><div class="iw"><span class="fi"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></span><input type="datetime-local" id="op-in" class="fin"/></div><div class="fe" id="oe-in">Select in time</div></div></div>
+          <div class="dur" id="op-dur"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg><span id="op-dur-t"></span></div>
+          <div class="sh">Purpose</div>
+          <div class="fld"><label class="fl">Description <span class="req">*</span></label><div class="iw"><span class="fi top"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></span><textarea id="op-purp" class="fin" placeholder="Describe your reason…" maxlength="300"></textarea></div><div class="fe" id="oe-purp">Enter purpose</div></div>
+          <div class="fld"><label class="fl">Mobile <span class="opt">Optional</span></label><div class="iw"><span class="fi"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg></span><input type="tel" id="op-mob" class="fin" placeholder="10-digit" maxlength="10"/></div></div>
+          <div class="btn-row"><button class="btn2" onclick="go('dashboard')">← Cancel</button><button class="btn" style="flex:1" onclick="opStep2()">Proceed for Approval →</button></div>
+        </div>
+        <!-- Step 2 -->
+        <div class="step-panel" id="op2">
+          <div class="ch"><div class="ch-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div><div><h2>Select Parent(s)</h2><p>Who should receive the OTP?</p></div></div>
+          <div class="pcard" id="par1" onclick="togPar('par1')"><div class="pcard-av" style="background:#eff6ff">👨</div><div><div style="font-size:.85rem;font-weight:700">Father</div><div style="font-size:.75rem;color:var(--f500);font-family:monospace">98XX XX 1234</div></div><div class="pcard-chk" id="chk1"></div></div>
+          <div class="pcard" id="par2" onclick="togPar('par2')"><div class="pcard-av" style="background:var(--gl)">👩</div><div><div style="font-size:.85rem;font-weight:700">Mother</div><div style="font-size:.75rem;color:var(--f500);font-family:monospace">87XX XX 5678</div></div><div class="pcard-chk" id="chk2"></div></div>
+          <div class="fe" id="oe-par" style="text-align:center;margin-bottom:8px">Select at least one parent</div>
+          <div class="note"><span>⚠️</span><p>An OTP will be sent to the selected parent's registered number.</p></div>
+          <div class="btn-row"><button class="btn2" onclick="opBack(1)">← Back</button><button class="btn" style="flex:1" onclick="opSendOTP()">Send OTP →</button></div>
+        </div>
+        <!-- Step 3 -->
+        <div class="step-panel" id="op3">
+          <div class="ch"><div class="ch-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></div><div><h2>OTP Verification</h2><p>Enter the 4-digit code</p></div></div>
+          <div style="text-align:center;font-size:.82rem;color:var(--f500);margin:8px 0">OTP sent to <strong id="otp-to" style="color:var(--f900)">98XXXX1234</strong></div>
+          <div class="otp-w"><input type="text" class="otp-b" maxlength="1" id="o1" oninput="otpIn(this,1)" onkeydown="otpBk(event,1)"/><input type="text" class="otp-b" maxlength="1" id="o2" oninput="otpIn(this,2)" onkeydown="otpBk(event,2)"/><input type="text" class="otp-b" maxlength="1" id="o3" oninput="otpIn(this,3)" onkeydown="otpBk(event,3)"/><input type="text" class="otp-b" maxlength="1" id="o4" oninput="otpIn(this,4)" onkeydown="otpBk(event,4)"/></div>
+          <div class="fe" id="oe-otp" style="text-align:center">Invalid OTP</div>
+          <div style="text-align:center;font-size:.72rem;color:var(--f400);margin-bottom:4px">Hint: use <strong>1234</strong></div>
+          <div class="btn-row" style="margin-top:16px"><button class="btn2" onclick="opBack(2)">← Back</button><button class="btn" style="flex:1" id="otp-btn" onclick="verifyOTP()">Verify OTP</button></div>
+        </div>
+        <!-- Step 4 -->
+        <div class="step-panel" id="op4">
+          <div class="qr-ok"><div class="qr-ic">✅</div><h2 style="font-size:1.15rem;font-weight:800;margin-bottom:4px">Outpass Approved!</h2><p style="font-size:.82rem;color:var(--f500);margin-bottom:12px">Verified and approved successfully</p><div class="qr-id" id="qr-rid"></div><div class="qr-fr"><div id="qr-code"></div></div><p style="font-size:.72rem;color:var(--f400);margin-top:8px"><strong>Important:</strong> Show this QR at exit & entry gates.</p>
+          <div style="display:flex;gap:10px;justify-content:center;margin-top:16px;flex-wrap:wrap"><button class="btn" style="width:auto;padding:10px 18px" onclick="go('dashboard')">🏠 Dashboard</button><button class="btn2" onclick="go('history')">📋 View History</button></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     SECTION: HISTORY
+═══════════════════════════════════════════ -->
+<section class="sec" id="sec-history">
+  <div class="pg">
+    <div style="display:flex;align-items:center;gap:8px;font-size:.72rem;color:var(--f400);margin-bottom:18px"><a class="link" onclick="go('dashboard')">Dashboard</a> <span>›</span> <span style="color:var(--f700);font-weight:600">History</span></div>
+    <div style="display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:12px;margin-bottom:22px"><div><h1 style="font-size:1.4rem;font-weight:800">My Outpass <span style="color:var(--r)">History</span></h1><p style="font-size:.82rem;color:var(--f500);margin-top:3px">All your past and current requests</p></div></div>
+    <div class="stats" id="h-stats"></div>
+    <div class="toolbar"><div class="sbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><input type="text" id="h-search" placeholder="Search purpose, date…" oninput="renderHist()"/></div><div class="pills" id="h-pills"></div></div>
+    <div class="tcard"><div class="tw"><table><thead><tr><th>#</th><th>Date</th><th>Out</th><th>In</th><th>Purpose</th><th>Type</th><th>Status</th><th>Action</th></tr></thead><tbody id="h-tbody"></tbody></table></div><div id="h-empty" style="display:none;text-align:center;padding:36px;color:var(--f400)">🔍 No records found</div></div>
+  </div>
+</section>
+
+<!-- ══ QR MODAL ══ -->
+<div class="modal-bg" id="modal" onclick="if(event.target===this)closeModal()"><div class="modal"><div class="card-bar"></div><div class="m-head"><h3>📱 Outpass QR</h3><button class="m-close" onclick="closeModal()">✕</button></div><div class="m-body"><div class="qr-fr"><div id="m-qr"></div></div><div class="qr-id" id="m-id"></div><div id="m-detail" style="font-size:.75rem;color:var(--f500);line-height:1.7;margin-top:6px"></div></div></div></div>
+
+<footer class="foot">&copy; 2026 <strong>VNR VJIET</strong> · Digital Outpass System · All rights reserved.</footer>
+<div id="toast"></div>
+
+<script>
+/* ═══ STATE ═══ */
+let user = JSON.parse(localStorage.getItem('vnr_user') || 'null');
+let requests = JSON.parse(localStorage.getItem('vnr_reqs') || '[]');
+let loginRole = 'Student';
+const parSel = { par1: false, par2: false };
+let passType = 'Out Pass';
+let hFilter = 'all';
+
+/* Seed demo data if empty */
+if (!requests.length) {
+  requests = [
+    {id:'OP-2026-4821',date:'Apr 7, 2026',out:'10:00 AM',inn:'2:00 PM',purpose:'Medical appointment',type:'Out Pass',status:'approved'},
+    {id:'OP-2026-3917',date:'Apr 5, 2026',out:'1:00 PM',inn:'5:30 PM',purpose:'Cricket tournament',type:'Out Pass',status:'used'},
+    {id:'OP-2026-2901',date:'Apr 3, 2026',out:'9:00 AM',inn:'12:00 PM',purpose:'Family emergency',type:'Out Pass',status:'rejected'},
+  ];
+  save();
+}
+
+function save() { localStorage.setItem('vnr_reqs', JSON.stringify(requests)); }
+
+/* ═══ TOAST ═══ */
+function toast(m, t='t-ok') { const e=document.getElementById('toast'); e.textContent=m; e.className=`show ${t}`; clearTimeout(e._t); e._t=setTimeout(()=>e.className='',3200); }
+
+/* ═══ NAVIGATION ═══ */
+function go(page) {
+  document.querySelectorAll('.sec').forEach(s => s.classList.remove('active'));
+  document.getElementById('sec-' + page).classList.add('active');
+  window.scrollTo(0, 0);
+
+  const nr = document.getElementById('nav-r');
+  const isAuth = page !== 'login' && page !== 'register';
+
+  if (isAuth && user) {
+    const ini = user.name.split(' ').map(n=>n[0]).join('');
+    nr.innerHTML = `<div class="nav-av">${ini}</div><div><div class="nav-nm">${user.name}</div><div class="nav-rl">${user.roll} · ${user.branch}-${user.section}</div></div><button class="btn-o" onclick="logout()">Logout</button>`;
+  } else {
+    nr.innerHTML = '';
+  }
+
+  if (page === 'dashboard') refreshDash();
+  if (page === 'history') { hFilter='all'; renderHist(); }
+  if (page === 'outpass') resetOutpass();
+}
+
+/* ═══ LOGIN ═══ */
+function setRole(btn) {
+  document.querySelectorAll('#login-tabs .rt').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  loginRole = btn.dataset.role;
+  const labels = {Student:'Student Roll Number',Parent:'Registered Email',Admin:'Admin Username'};
+  const phs = {Student:'e.g. 22VV1A0501',Parent:'e.g. parent@email.com',Admin:'e.g. admin01'};
+  document.getElementById('l-uid').innerHTML = labels[loginRole]+' <span class="req">*</span>';
+  document.getElementById('l-user').placeholder = phs[loginRole];
+}
+
+function doLogin(e) {
+  e.preventDefault();
+  const uid = document.getElementById('l-user').value.trim();
+  const pwd = document.getElementById('l-pass').value;
+  let ok = true;
+  if(!uid){document.getElementById('le-user').classList.add('show');ok=false}else{document.getElementById('le-user').classList.remove('show')}
+  if(!pwd){document.getElementById('le-pass').classList.add('show');ok=false}else{document.getElementById('le-pass').classList.remove('show')}
+  if(!ok){toast('⚠️ Fill required fields','t-warn');return false}
+
+  /* Demo user */
+  user = JSON.parse(localStorage.getItem('vnr_user') || 'null');
+  if (!user) user = {roll:'22VV1A0501',name:'Aarav Singh',branch:'CSE',section:'A',year:'3rd Year',room:'CS-301'};
+  localStorage.setItem('vnr_user', JSON.stringify(user));
+  console.log('Login →', loginRole, uid);
+
+  const btn=document.getElementById('l-btn');btn.disabled=true;btn.innerHTML='<span class="spin"></span> Signing in…';
+  setTimeout(()=>{btn.disabled=false;btn.innerHTML='→ Login to Portal';go('dashboard');toast('✅ Welcome, '+user.name.split(' ')[0]+'!');},1000);
+  return false;
+}
+
+function logout() { user=null; localStorage.removeItem('vnr_user'); go('login'); toast('Logged out','t-info'); }
+
+/* ═══ REGISTER ═══ */
+function pwStr() {
+  const p=document.getElementById('r-pass').value,s=document.getElementById('pws'),f=document.getElementById('pws-fill'),t=document.getElementById('pws-txt');
+  if(!p){s.classList.remove('show');return}s.classList.add('show');
+  let sc=0;if(p.length>=8)sc++;if(p.length>=12)sc++;if(/[A-Z]/.test(p))sc++;if(/[0-9]/.test(p))sc++;if(/[^A-Za-z0-9]/.test(p))sc++;
+  const lvs=[{w:'20%',c:'#dc2626',l:'Very Weak'},{w:'40%',c:'#f97316',l:'Weak'},{w:'60%',c:'#eab308',l:'Fair'},{w:'80%',c:'#22c55e',l:'Strong'},{w:'100%',c:'#15803d',l:'Very Strong'}];
+  const lv=lvs[Math.min(sc-1,4)]||lvs[0];f.style.width=lv.w;f.style.background=lv.c;t.style.color=lv.c;t.textContent=lv.l;
+}
+
+function doRegister(e) {
+  e.preventDefault();
+  const roll=document.getElementById('r-roll').value.trim(),name=document.getElementById('r-name').value.trim(),branch=document.getElementById('r-branch').value,sec=document.getElementById('r-sec').value,room=document.getElementById('r-room').value.trim(),year=document.getElementById('r-year').value,pw=document.getElementById('r-pass').value,conf=document.getElementById('r-conf').value;
+  let ok=true;
+  if(!roll||!name||!branch||!sec||!room||!year){toast('⚠️ Fill all fields','t-warn');ok=false}
+  if(pw.length<8){toast('⚠️ Password min 8 chars','t-warn');ok=false}
+  if(pw!==conf){document.getElementById('re-conf').classList.add('show');ok=false}else{document.getElementById('re-conf').classList.remove('show')}
+  if(!ok)return false;
+
+  user={roll,name,branch,section:sec,year,room};
+  localStorage.setItem('vnr_user',JSON.stringify(user));
+  console.log('Registered →',user);
+
+  const btn=document.getElementById('r-btn');btn.disabled=true;btn.innerHTML='<span class="spin"></span> Registering…';
+  setTimeout(()=>{btn.disabled=false;btn.innerHTML='Register Now';go('login');toast('✅ Registered! Please login.');},1200);
+  return false;
+}
+
+/* ═══ DASHBOARD ═══ */
+function refreshDash() {
+  if(!user)return;
+  const ini=user.name.split(' ').map(n=>n[0]).join('');
+  document.getElementById('d-fname').textContent=user.name.split(' ')[0];
+  document.getElementById('d-date').textContent=new Date().toLocaleDateString('en-IN',{weekday:'short',day:'numeric',month:'long',year:'numeric'});
+  document.getElementById('d-av').textContent=ini;
+  document.getElementById('d-nm').textContent=user.name;
+  document.getElementById('d-rl2').textContent=user.roll;
+  document.getElementById('d-roll2').textContent=user.roll;
+  document.getElementById('d-br2').textContent=user.branch;
+  document.getElementById('d-sec2').textContent='Section '+user.section;
+  document.getElementById('d-yr2').textContent=user.year;
+  document.getElementById('d-rm2').textContent=user.room;
+
+  document.getElementById('ds-all').textContent=requests.length;
+  document.getElementById('ds-app').textContent=requests.filter(r=>r.status==='approved').length;
+  document.getElementById('ds-pen').textContent=requests.filter(r=>r.status==='pending').length;
+  document.getElementById('ds-rej').textContent=requests.filter(r=>r.status==='rejected').length;
+}
+
+/* ═══ OUTPASS FLOW ═══ */
+function startOutpass(type) { passType=type; go('outpass'); document.getElementById('op-title').textContent=type+' Request'; console.log(type+' clicked'); }
+
+function resetOutpass() {
+  ['op1','op2','op3','op4'].forEach(id=>{const e=document.getElementById(id);e.classList.remove('active')});
+  document.getElementById('op1').classList.add('active');
+  for(let i=1;i<=4;i++){const s=document.getElementById('s'+i);s.className=i===1?'stp on':'stp'}
+  for(let i=1;i<=3;i++)document.getElementById('ln'+i).className='stp-ln';
+  parSel.par1=parSel.par2=false;
+  document.querySelectorAll('.pcard').forEach(p=>{p.classList.remove('sel');p.querySelector('.pcard-chk').innerHTML=''});
+  const now=new Date(Date.now()-new Date().getTimezoneOffset()*60000).toISOString().slice(0,16);
+  document.getElementById('op-out').min=now;document.getElementById('op-in').min=now;
+}
+
+function opShowStep(n) {
+  ['op1','op2','op3','op4'].forEach(id=>document.getElementById(id).classList.remove('active'));
+  document.getElementById('op'+n).classList.add('active');
+  for(let i=1;i<=4;i++){const s=document.getElementById('s'+i);s.className=i<n?'stp done':i===n?'stp on':'stp'}
+  for(let i=1;i<=3;i++)document.getElementById('ln'+i).className=i<n?'stp-ln filled':'stp-ln';
+}
+function opBack(n){opShowStep(n)}
+
+/* Duration */
+document.getElementById('op-out').addEventListener('change',function(){document.getElementById('op-in').min=this.value;calcDur()});
+document.getElementById('op-in').addEventListener('change',calcDur);
+function calcDur(){const o=document.getElementById('op-out').value,i=document.getElementById('op-in').value,d=document.getElementById('op-dur');if(o&&i&&i>o){const m=Math.round((new Date(i)-new Date(o))/60000),h=Math.floor(m/60);document.getElementById('op-dur-t').textContent=`Duration: ${h>0?h+'h ':''}${m%60}m`;d.classList.add('show')}else d.classList.remove('show')}
+
+/* Step 1→2 */
+function opStep2(){
+  const ot=document.getElementById('op-out').value,it=document.getElementById('op-in').value,pu=document.getElementById('op-purp').value.trim();
+  let ok=true;
+  if(!ot){document.getElementById('oe-out').classList.add('show');ok=false}else document.getElementById('oe-out').classList.remove('show');
+  if(!it||it<=ot){document.getElementById('oe-in').classList.add('show');ok=false}else document.getElementById('oe-in').classList.remove('show');
+  if(!pu){document.getElementById('oe-purp').classList.add('show');ok=false}else document.getElementById('oe-purp').classList.remove('show');
+  if(!ok){toast('⚠️ Fix errors','t-warn');return}
+  console.log('Outpass form →',{out:ot,inn:it,purpose:pu,type:passType});
+  opShowStep(2);toast('✅ Form validated');
+}
+
+/* Parent toggle */
+function togPar(id){parSel[id]=!parSel[id];const e=document.getElementById(id);e.classList.toggle('sel',parSel[id]);e.querySelector('.pcard-chk').innerHTML=parSel[id]?'✓':'';document.getElementById('oe-par').classList.remove('show')}
+
+function opSendOTP(){
+  if(!parSel.par1&&!parSel.par2){document.getElementById('oe-par').classList.add('show');toast('⚠️ Select parent','t-warn');return}
+  const sel=[];if(parSel.par1)sel.push('Father');if(parSel.par2)sel.push('Mother');
+  console.log('Selected:',sel);
+  document.getElementById('otp-to').textContent=parSel.par1?'98XXXX1234':'87XXXX5678';
+  opShowStep(3);document.getElementById('o1').focus();toast('📤 OTP sent');
+}
+
+/* OTP */
+function otpIn(el,n){el.value=el.value.replace(/[^0-9]/g,'');if(el.value&&n<4)document.getElementById('o'+(n+1)).focus();document.getElementById('oe-otp').classList.remove('show');document.querySelectorAll('.otp-b').forEach(b=>b.classList.remove('err'))}
+function otpBk(e,n){if(e.key==='Backspace'&&!e.target.value&&n>1)document.getElementById('o'+(n-1)).focus()}
+
+function verifyOTP(){
+  const otp=[1,2,3,4].map(i=>document.getElementById('o'+i).value).join('');
+  if(otp.length<4){document.querySelectorAll('.otp-b').forEach(b=>b.classList.add('err'));document.getElementById('oe-otp').classList.add('show');return}
+  const btn=document.getElementById('otp-btn');btn.disabled=true;btn.innerHTML='<span class="spin"></span> Verifying…';
+  setTimeout(()=>{
+    if(otp==='1234'){
+      document.querySelectorAll('.otp-b').forEach(b=>{b.classList.remove('err');b.classList.add('ok')});
+      setTimeout(()=>genQR(),500);
+    }else{
+      document.querySelectorAll('.otp-b').forEach(b=>b.classList.add('err'));
+      document.getElementById('oe-otp').classList.add('show');
+      btn.disabled=false;btn.innerHTML='Verify OTP';toast('❌ Invalid OTP. Use 1234','t-err');
+    }
+  },1000);
+}
+
+function genQR(){
+  const ot=document.getElementById('op-out').value,it=document.getElementById('op-in').value,pu=document.getElementById('op-purp').value.trim();
+  const rid='OP-2026-'+String(Math.floor(1000+Math.random()*9000));
+  document.getElementById('qr-rid').textContent=rid;
+
+  /* Save to history */
+  const newReq={id:rid,date:new Date().toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'}),out:new Date(ot).toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'}),inn:new Date(it).toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'}),purpose:pu,type:passType,status:'approved'};
+  requests.unshift(newReq);save();
+
+  opShowStep(4);
+  const qrEl=document.getElementById('qr-code');qrEl.innerHTML='';
+  new QRCode(qrEl,{text:JSON.stringify({id:rid,roll:user.roll,name:user.name,out:newReq.out,inn:newReq.inn,status:'Approved'}),width:180,height:180,colorDark:'#c0182a',colorLight:'#fff',correctLevel:QRCode.CorrectLevel.M});
+  console.log('QR Generated:',rid);toast('🎉 Outpass Approved!');
+}
+
+/* ═══ HISTORY ═══ */
+function renderHist(){
+  const q=document.getElementById('h-search').value.toLowerCase();
+  const rows=requests.filter(r=>(hFilter==='all'||r.status===hFilter)&&(!q||r.purpose.toLowerCase().includes(q)||r.date.toLowerCase().includes(q)||r.id.toLowerCase().includes(q)));
+
+  /* Stats */
+  document.getElementById('h-stats').innerHTML=[
+    {l:'Total',v:requests.length,c:'#3b82f6',bg:'#eff6ff',ic:'📋'},
+    {l:'Approved',v:requests.filter(r=>r.status==='approved').length,c:'var(--gr)',bg:'var(--grl)',ic:'✅'},
+    {l:'Pending',v:requests.filter(r=>r.status==='pending').length,c:'var(--am)',bg:'var(--aml)',ic:'⏳'},
+    {l:'Used',v:requests.filter(r=>r.status==='used').length,c:'var(--f400)',bg:'var(--f100)',ic:'🏷️'}
+  ].map(s=>`<div class="stat" style="border-left-color:${s.c}"><div class="stat-ic" style="background:${s.bg}">${s.ic}</div><div><div class="sv">${s.v}</div><div class="sl">${s.l}</div></div></div>`).join('');
+
+  /* Pills */
+  const counts={all:requests.length};requests.forEach(r=>counts[r.status]=(counts[r.status]||0)+1);
+  document.getElementById('h-pills').innerHTML=['all','approved','pending','used','rejected'].map(k=>`<button class="pill${hFilter===k?' on':''}" onclick="hFilter='${k}';renderHist()">${k.charAt(0).toUpperCase()+k.slice(1)} (${counts[k]||0})</button>`).join('');
+
+  const tbody=document.getElementById('h-tbody'),empty=document.getElementById('h-empty');
+  if(!rows.length){tbody.innerHTML='';empty.style.display='';return}
+  empty.style.display='none';
+  const SM={approved:{c:'b-app',l:'✓ Approved'},pending:{c:'b-pen',l:'⏳ Pending'},rejected:{c:'b-rej',l:'✕ Rejected'},used:{c:'b-used',l:'🏷 Used'}};
+  tbody.innerHTML=rows.map((r,i)=>{const s=SM[r.status]||SM.pending;const act=(r.status==='approved'||r.status==='used')?`<button class="btn-qr" onclick="showQR('${r.id}')">📱 QR</button>`:'<span style="color:var(--f300)">—</span>';
+    return `<tr><td style="font-weight:700;color:var(--f400);font-size:.73rem">${i+1}</td><td style="white-space:nowrap;font-weight:600">${r.date}</td><td>${r.out}</td><td>${r.inn}</td><td style="max-width:160px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis" title="${r.purpose}">${r.purpose}</td><td style="font-size:.72rem;font-weight:600;color:${r.type==='Home Pass'?'var(--g)':'var(--r)'};white-space:nowrap">${r.type==='Home Pass'?'🏠':'🚪'} ${r.type}</td><td><span class="badge ${s.c}">${s.l}</span></td><td>${act}</td></tr>`;
+  }).join('');
+}
+
+/* QR Modal */
+function showQR(id){
+  const r=requests.find(x=>x.id===id);if(!r)return;
+  document.getElementById('m-id').textContent=r.id;
+  document.getElementById('m-detail').innerHTML=`<strong>Student:</strong> ${user.name} (${user.roll})<br><strong>Date:</strong> ${r.date}<br><strong>Out:</strong> ${r.out} → <strong>In:</strong> ${r.inn}<br><strong>Purpose:</strong> ${r.purpose}`;
+  const qrEl=document.getElementById('m-qr');qrEl.innerHTML='';
+  new QRCode(qrEl,{text:JSON.stringify({id:r.id,roll:user.roll,name:user.name,out:r.out,inn:r.inn,status:r.status}),width:170,height:170,colorDark:'#c0182a',colorLight:'#fff',correctLevel:QRCode.CorrectLevel.M});
+  document.getElementById('modal').classList.add('show');document.body.style.overflow='hidden';
+}
+function closeModal(){document.getElementById('modal').classList.remove('show');document.body.style.overflow=''}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});
+
+/* ═══ INIT ═══ */
+if(user){go('dashboard')}else{go('login')}
+</script>
+</body>
+</html>

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Outpass History — VNR VJIET</title>
+<link rel="stylesheet" href="app.css"/>
+<script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+</head>
+<body>
+<div class="strip"><span><span class="strip-dot"></span>NAAC A+ · Autonomous · JNTUH · VNR VJIET Bachupally</span><span class="strip-r">Digital Outpass System</span></div>
+<nav class="nav">
+  <a href="dashboard.html" class="brand">
+    <svg class="logo-s" viewBox="0 0 52 52" fill="none"><rect width="52" height="52" rx="10" fill="#c0182a"/><path d="M26 8L40 13V27C40 35 26 44 26 44S12 35 12 27V13Z" fill="#fff" opacity=".95"/><text x="17" y="33" font-family="Poppins" font-weight="800" font-size="18" fill="#c0182a" letter-spacing="-1">VNR</text><rect x="12" y="38" width="28" height="3" rx="1.5" fill="#c9980a"/><circle cx="26" cy="9" r="2.5" fill="#c9980a"/></svg>
+    <div><div class="bn">VNR VJIET</div><div class="bs">Vallurupalli Nageswara Rao Vignana Jyothi Institute of Engineering &amp; Technology</div><div class="bt">✦ Empowering Minds, Building Futures ✦</div></div>
+  </a>
+  <div class="nav-r" id="nav-r"></div>
+</nav>
+
+<div class="pg" style="flex:1">
+  <div style="display:flex;align-items:center;gap:8px;font-size:.72rem;color:var(--f400);margin-bottom:18px"><a href="dashboard.html" style="color:var(--r);text-decoration:none;font-weight:600">Dashboard</a> <span>›</span> <span style="color:var(--f700);font-weight:600">History</span></div>
+
+  <div style="display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:12px;margin-bottom:22px">
+    <div><h1 style="font-size:1.4rem;font-weight:800">My Outpass <span style="color:var(--r)">History</span></h1><p style="font-size:.82rem;color:var(--f500);margin-top:3px">All your past and current requests</p></div>
+    <a href="dashboard.html" class="btn-o">← Dashboard</a>
+  </div>
+
+  <div class="stats" id="h-stats"></div>
+
+  <div class="toolbar">
+    <div class="sbox"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><input type="text" id="h-search" placeholder="Search purpose, date…" oninput="render()"/></div>
+    <div class="pills" id="h-pills"></div>
+  </div>
+
+  <div class="tcard">
+    <div class="tw">
+      <table><thead><tr><th>#</th><th>Date</th><th>Out</th><th>In</th><th>Purpose</th><th>Type</th><th>Status</th><th>Action</th></tr></thead>
+      <tbody id="h-tbody"></tbody></table>
+    </div>
+    <div id="h-empty" style="display:none;text-align:center;padding:36px;color:var(--f400)">🔍 No records found</div>
+  </div>
+</div>
+
+<!-- QR Modal -->
+<div class="modal-bg" id="modal" onclick="if(event.target===this)closeM()"><div class="modal"><div class="card-bar"></div><div class="m-head"><h3>📱 Outpass QR</h3><button class="m-close" onclick="closeM()">✕</button></div><div class="m-body"><div class="qr-fr"><div id="m-qr"></div></div><div class="qr-id" id="m-id"></div><div id="m-detail" style="font-size:.75rem;color:var(--f500);line-height:1.7;margin-top:6px"></div><div style="display:flex;align-items:center;gap:6px;background:var(--gl);border:1px solid var(--gs);border-radius:8px;padding:8px 12px;font-size:.72rem;color:#78350f;margin-top:14px;text-align:left">⚠️ Show this QR at exit & entry gates.</div></div></div></div>
+
+<footer class="foot">&copy; 2026 <strong>VNR VJIET</strong> · Digital Outpass System</footer>
+<div id="toast"></div>
+
+<script>
+const API = 'http://localhost:5000';
+const user = JSON.parse(localStorage.getItem('vnr_user')||'null');
+const token = localStorage.getItem('vnr_token');
+if(!user || !token) window.location.href='login.html';
+
+let reqs = [];
+let filter = 'all';
+
+/* Navbar */
+if(user){const ini=user.name.split(' ').map(n=>n[0]).join('');document.getElementById('nav-r').innerHTML=`<div class="nav-av">${ini}</div><div><div class="nav-nm">${user.name}</div><div class="nav-rl">${user.roll} · ${user.branch}-${user.section}</div></div><button class="btn-o" onclick="localStorage.removeItem('vnr_token');localStorage.removeItem('vnr_user');window.location.href='login.html'">Logout</button>`}
+
+function toast(m,t='t-ok'){const e=document.getElementById('toast');e.textContent=m;e.className=`show ${t}`;clearTimeout(e._t);e._t=setTimeout(()=>e.className='',3200)}
+
+function setF(f){filter=f;render()}
+
+function render(){
+  const q = document.getElementById('h-search').value.toLowerCase();
+  const rows = reqs.filter(r=>(filter==='all'||r.status===filter)&&(!q||r.purpose.toLowerCase().includes(q)||r.date.toLowerCase().includes(q)||r.id.toLowerCase().includes(q)));
+
+  /* Stats */
+  document.getElementById('h-stats').innerHTML=[
+    {l:'Total',v:reqs.length,c:'#3b82f6',bg:'#eff6ff',ic:'📋'},
+    {l:'Approved',v:reqs.filter(r=>r.status==='approved').length,c:'var(--gr)',bg:'var(--grl)',ic:'✅'},
+    {l:'Pending',v:reqs.filter(r=>r.status==='pending').length,c:'var(--am)',bg:'var(--aml)',ic:'⏳'},
+    {l:'Used',v:reqs.filter(r=>r.status==='used').length,c:'var(--f400)',bg:'var(--f100)',ic:'🏷️'}
+  ].map(s=>`<div class="stat" style="border-left-color:${s.c}"><div class="stat-ic" style="background:${s.bg}">${s.ic}</div><div><div class="sv">${s.v}</div><div class="sl">${s.l}</div></div></div>`).join('');
+
+  /* Pills */
+  const cnt={all:reqs.length};reqs.forEach(r=>cnt[r.status]=(cnt[r.status]||0)+1);
+  document.getElementById('h-pills').innerHTML=['all','approved','pending','used','rejected'].map(k=>`<button class="pill${filter===k?' on':''}" onclick="setF('${k}')">${k[0].toUpperCase()+k.slice(1)} (${cnt[k]||0})</button>`).join('');
+
+  const tbody=document.getElementById('h-tbody'),empty=document.getElementById('h-empty');
+  if(!rows.length){tbody.innerHTML='';empty.style.display='';return}
+  empty.style.display='none';
+
+  const SM={approved:{c:'b-app',l:'✓ Approved'},pending:{c:'b-pen',l:'⏳ Pending'},rejected:{c:'b-rej',l:'✕ Rejected'},used:{c:'b-used',l:'🏷 Used'}};
+  tbody.innerHTML=rows.map((r,i)=>{
+    const s=SM[r.status]||SM.pending;
+    const act=(r.status==='approved'||r.status==='used')?`<button class="btn-qr" onclick="showQR('${r.id}')">📱 QR</button>`:'<span style="color:var(--f300)">—</span>';
+    return `<tr><td style="font-weight:700;color:var(--f400);font-size:.73rem">${i+1}</td><td style="white-space:nowrap;font-weight:600">${r.date}</td><td>${r.out}</td><td>${r.inn}</td><td style="max-width:160px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis" title="${r.purpose}">${r.purpose}</td><td style="font-size:.72rem;font-weight:600;color:${r.type==='Home Pass'?'var(--g)':'var(--r)'};white-space:nowrap">${r.type==='Home Pass'?'🏠':'🚪'} ${r.type}</td><td><span class="badge ${s.c}">${s.l}</span></td><td>${act}</td></tr>`;
+  }).join('');
+}
+
+function showQR(id){
+  const r=reqs.find(x=>x.id===id);if(!r)return;
+  document.getElementById('m-id').textContent=r._id || r.id;
+  document.getElementById('m-detail').innerHTML=`<strong>Student:</strong> ${user.name} (${user.roll})<br><strong>Date:</strong> ${r.date}<br><strong>Out:</strong> ${r.out} → <strong>In:</strong> ${r.inn}<br><strong>Purpose:</strong> ${r.purpose}`;
+  
+  const qrEl=document.getElementById('m-qr');qrEl.innerHTML='';
+  if (r.qrCode) {
+    qrEl.innerHTML = `<img src="${r.qrCode}" alt="QR" style="width:170px;height:170px;border-radius:8px"/>`;
+  } else {
+    /* Fallback */
+    new QRCode(qrEl,{text:JSON.stringify({id:r.id,roll:user.roll,name:user.name,out:r.out,inn:r.inn,status:r.status}),width:170,height:170,colorDark:'#c0182a',correctLevel:QRCode.CorrectLevel.M});
+  }
+  document.getElementById('modal').classList.add('show');document.body.style.overflow='hidden';
+}
+
+function closeM(){document.getElementById('modal').classList.remove('show');document.body.style.overflow=''}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeM()});
+
+/* Fetch History */
+async function loadHistory() {
+  try {
+    const res = await fetch(`${API}/api/student/history/${user.id}`, {
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+    const data = await res.json();
+    if (res.ok) {
+      reqs = data.records.map(r => {
+        // Map backend state to frontend ui state
+        let st = r.status.toLowerCase();
+        if (st === 'approved' && r.scanCount > 0) st = 'used';
+
+        return {
+          _id: r._id,
+          id: r._id.substring(0,8).toUpperCase(), // Short ID
+          date: new Date(r.createdAt).toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'}),
+          out: r.outTime,
+          inn: r.inTime,
+          purpose: r.purpose,
+          type: r.type === 'homepass' ? 'Home Pass' : 'Out Pass',
+          status: st,
+          qrCode: r.qrCode
+        };
+      });
+      render();
+    } else {
+      toast('❌ Failed to load history', 't-err');
+    }
+  } catch(err) {
+    toast('⚠️ Cannot reach server.', 't-warn');
+  }
+}
+
+loadHistory();
+</script>
+</body>
+</html>

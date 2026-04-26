@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Login — VNR VJIET Digital Outpass System</title>
+<link rel="stylesheet" href="app.css"/>
+</head>
+<body>
+<div class="strip"><span><span class="strip-dot"></span>NAAC A+ · Autonomous · JNTUH · VNR VJIET Bachupally</span><span class="strip-r">Digital Outpass System</span></div>
+<nav class="nav">
+  <div class="brand" style="cursor:default">
+    <svg class="logo-s" viewBox="0 0 52 52" fill="none"><rect width="52" height="52" rx="10" fill="#c0182a"/><path d="M26 8L40 13V27C40 35 26 44 26 44S12 35 12 27V13Z" fill="#fff" opacity=".95"/><text x="17" y="33" font-family="Poppins" font-weight="800" font-size="18" fill="#c0182a" letter-spacing="-1">VNR</text><rect x="12" y="38" width="28" height="3" rx="1.5" fill="#c9980a"/><circle cx="26" cy="9" r="2.5" fill="#c9980a"/></svg>
+    <div><div class="bn">VNR VJIET</div><div class="bs">Vallurupalli Nageswara Rao Vignana Jyothi Institute of Engineering &amp; Technology</div><div class="bt">✦ Empowering Minds, Building Futures ✦</div></div>
+  </div>
+  <div class="nav-r"></div>
+</nav>
+
+<div class="hero"><div class="hero-pill">● Official Portal</div><h1>Digital <span>Outpass</span> System</h1><p>Smart QR-Based Exit Management for Students</p><div class="hero-div"><div class="hd-l"></div><div class="hd-d"></div><div class="hd-l"></div></div></div>
+
+<div class="pg-center" style="flex:1">
+  <div class="card">
+    <div class="card-bar"></div>
+    <div class="cb">
+      <div class="ch">
+        <div class="ch-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></div>
+        <div><h2>Sign In to Your Account</h2><p>Access your outpass dashboard</p></div>
+      </div>
+
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:18px"><div style="flex:1;height:1px;background:var(--f200)"></div><span style="font-size:.7rem;color:var(--f400)">Enter credentials</span><div style="flex:1;height:1px;background:var(--f200)"></div></div>
+
+      <form id="login-form" onsubmit="return doLogin(event)">
+        <div class="fld">
+          <label class="fl" id="uid-label">Student Roll Number <span class="req">*</span></label>
+          <div class="iw"><span class="fi"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span>
+          <input type="text" id="uid" class="fin" placeholder="e.g. 22VV1A0501"/></div>
+          <div class="fe" id="e-uid">Please enter your ID</div>
+        </div>
+
+        <div class="fld">
+          <label class="fl">Password <span class="req">*</span></label>
+          <div class="iw"><span class="fi"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></span>
+          <input type="password" id="pwd" class="fin" placeholder="Enter your password"/></div>
+          <div class="fe" id="e-pwd">Please enter your password</div>
+        </div>
+
+        <div style="display:flex;justify-content:space-between;align-items:center;font-size:.78rem;margin-bottom:20px">
+          <label style="display:flex;align-items:center;gap:6px;color:var(--f500);cursor:pointer"><input type="checkbox" style="accent-color:var(--r)"/> Remember me</label>
+          <a href="forgot-password.html" style="color:var(--r);font-weight:600;text-decoration:none;font-size:.78rem">Forgot Password?</a>
+        </div>
+
+        <button type="submit" class="btn" id="login-btn">→ Login to Portal</button>
+      </form>
+
+      <div class="tc">New student? <a href="signup.html" class="link">Register here →</a></div>
+      <div class="tc" style="margin-top:6px"><a href="admin_login.html" class="link" style="font-size:.72rem;color:var(--f400)">🛡️ Admin Login →</a></div>
+    </div>
+  </div>
+</div>
+
+<footer class="foot">&copy; 2026 <strong>VNR VJIET</strong> · Digital Outpass System · All rights reserved.</footer>
+<div id="toast"></div>
+
+<script>
+const API = 'http://localhost:5000';
+
+function toast(m, t='t-ok') {
+  const e = document.getElementById('toast');
+  e.textContent = m; e.className = `show ${t}`;
+  clearTimeout(e._t); e._t = setTimeout(() => e.className = '', 3200);
+}
+
+async function doLogin(e) {
+  e.preventDefault();
+  const uid = document.getElementById('uid').value.trim();
+  const pwd = document.getElementById('pwd').value;
+  let ok = true;
+
+  if (!uid) { document.getElementById('e-uid').classList.add('show'); ok = false; }
+  else document.getElementById('e-uid').classList.remove('show');
+  if (!pwd) { document.getElementById('e-pwd').classList.add('show'); ok = false; }
+  else document.getElementById('e-pwd').classList.remove('show');
+
+  if (!ok) { toast('⚠️ Fill required fields', 't-warn'); return false; }
+
+  const btn = document.getElementById('login-btn');
+  btn.disabled = true; btn.innerHTML = '<span class="spin"></span> Signing in…';
+
+  try {
+    const res = await fetch(`${API}/api/auth/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ rollNo: uid, password: pwd })
+    });
+    const data = await res.json();
+
+    if (!res.ok) {
+      toast('❌ ' + (data.message || 'Login failed'), 't-err');
+      btn.disabled = false; btn.innerHTML = '→ Login to Portal';
+      return false;
+    }
+
+    /* Store token + student in localStorage */
+    localStorage.setItem('vnr_token', data.token);
+    localStorage.setItem('vnr_user', JSON.stringify({
+      id:      data.student.id,
+      roll:    data.student.rollNo,
+      name:    data.student.name,
+      branch:  data.student.branch,
+      section: data.student.section,
+      room:    data.student.roomNo,
+      year:    '3rd Year',
+    }));
+
+    toast('✅ Welcome, ' + data.student.name.split(' ')[0] + '!');
+    setTimeout(() => window.location.href = 'dashboard.html', 800);
+
+  } catch (err) {
+    toast('⚠️ Cannot reach server. Check if backend is running.', 't-warn');
+    btn.disabled = false; btn.innerHTML = '→ Login to Portal';
+  }
+  return false;
+}
+
+/* Auto-redirect if already logged in */
+if (localStorage.getItem('vnr_token') && localStorage.getItem('vnr_user')) window.location.href = 'dashboard.html';
+</script>
+</body>
+</html>

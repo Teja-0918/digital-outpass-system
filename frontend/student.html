@@ -1,0 +1,1033 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Student Dashboard — VNR VJIET Digital Outpass System</title>
+  <meta name="description" content="Student Dashboard — VNR VJIET Digital Outpass System" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ════════════════════════════════════════
+       ROOT & RESET
+    ════════════════════════════════════════ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    :root {
+      --red:         #c0182a;
+      --red-dark:    #9b1020;
+      --red-light:   #fef2f2;
+      --red-border:  #fca5a5;
+      --gold:        #c9980a;
+      --gold-soft:   #fde68a;
+      --gold-light:  #fefce8;
+      --white:       #ffffff;
+      --gray-50:     #f9fafb;
+      --gray-100:    #f3f4f6;
+      --gray-200:    #e5e7eb;
+      --gray-300:    #d1d5db;
+      --gray-400:    #9ca3af;
+      --gray-500:    #6b7280;
+      --gray-600:    #4b5563;
+      --gray-700:    #374151;
+      --gray-900:    #111827;
+      --blue:        #1d4ed8;
+      --blue-light:  #eff6ff;
+      --green:       #15803d;
+      --green-light: #f0fdf4;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: var(--white);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      color: var(--gray-900);
+    }
+
+    /* ════════════════════════════════════════
+       ANNOUNCEMENT STRIP
+    ════════════════════════════════════════ */
+    .strip {
+      background: linear-gradient(90deg, var(--red-dark), var(--red), #a01122);
+      padding: 6px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.67rem;
+      color: rgba(255,255,255,0.88);
+      letter-spacing: 0.2px;
+    }
+    .strip-dot {
+      display: inline-block;
+      width: 6px; height: 6px;
+      background: var(--gold);
+      border-radius: 50%;
+      margin-right: 8px;
+      animation: blink 1.6s ease-in-out infinite;
+      vertical-align: middle;
+    }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+    .strip-right { font-size: 0.67rem; font-weight: 600; color: var(--gold-soft); }
+
+    /* ════════════════════════════════════════
+       NAVBAR
+    ════════════════════════════════════════ */
+    .navbar {
+      background: var(--white);
+      border-bottom: 3px solid var(--red);
+      padding: 0 40px;
+      height: 68px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 2px 14px rgba(192,24,42,0.09);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .brand { display: flex; align-items: center; gap: 13px; text-decoration: none; }
+
+    .logo-shield {
+      width: 48px; height: 48px;
+      flex-shrink: 0;
+    }
+
+    .brand-text { display: flex; flex-direction: column; line-height: 1.25; }
+    .brand-name    { font-size: 1.05rem; font-weight: 800; color: var(--red); letter-spacing: -0.2px; }
+    .brand-sub     { font-size: 0.58rem; font-weight: 400; color: var(--gray-500); }
+    .brand-tagline { font-size: 0.6rem; font-weight: 600; color: var(--gold); font-style: italic; }
+
+    /* Navbar right */
+    .nav-right { display: flex; align-items: center; gap: 14px; }
+
+    .nav-user { display: flex; align-items: center; gap: 10px; }
+
+    .nav-avatar {
+      width: 38px; height: 38px;
+      background: linear-gradient(135deg, var(--red) 0%, var(--red-dark) 100%);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--white);
+      flex-shrink: 0;
+      box-shadow: 0 2px 8px rgba(192,24,42,0.3);
+    }
+
+    .nav-user-info { display: flex; flex-direction: column; line-height: 1.25; }
+    .nav-user-name { font-size: 0.85rem; font-weight: 700; color: var(--gray-900); }
+    .nav-user-role {
+      font-size: 0.65rem;
+      font-weight: 500;
+      color: var(--gray-500);
+    }
+
+    .nav-badge {
+      background: var(--red-light);
+      color: var(--red);
+      border: 1px solid var(--red-border);
+      border-radius: 999px;
+      padding: 3px 10px;
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+      text-transform: uppercase;
+    }
+
+    .btn-logout {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      border: 1.5px solid var(--gray-200);
+      border-radius: 8px;
+      background: var(--white);
+      color: var(--gray-600);
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+    .btn-logout:hover {
+      border-color: var(--red);
+      color: var(--red);
+      background: var(--red-light);
+    }
+
+    /* ════════════════════════════════════════
+       PAGE BODY
+    ════════════════════════════════════════ */
+    .page-body {
+      flex: 1;
+      background: var(--gray-50);
+      padding: 36px 40px 60px;
+    }
+
+    /* ─── Welcome Section ─── */
+    .welcome-section {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-bottom: 32px;
+      padding-bottom: 28px;
+      border-bottom: 1px solid var(--gray-200);
+    }
+
+    .welcome-left {}
+    .welcome-greeting {
+      font-size: 1.55rem;
+      font-weight: 800;
+      color: var(--gray-900);
+      letter-spacing: -0.4px;
+      line-height: 1.2;
+    }
+    .welcome-greeting span { color: var(--red); }
+
+    .welcome-sub {
+      font-size: 0.85rem;
+      color: var(--gray-500);
+      margin-top: 4px;
+      font-weight: 400;
+    }
+
+    .welcome-date {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      background: var(--white);
+      border: 1px solid var(--gray-200);
+      border-radius: 8px;
+      padding: 9px 16px;
+      font-size: 0.78rem;
+      font-weight: 500;
+      color: var(--gray-500);
+      box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+    }
+    .welcome-date svg { color: var(--red); }
+
+    /* ════════════════════════════════════════
+       STATS ROW
+    ════════════════════════════════════════ */
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+
+    .stat-card {
+      background: var(--white);
+      border: 1px solid var(--gray-200);
+      border-radius: 12px;
+      padding: 18px 20px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+      transition: all 0.2s ease;
+      border-left: 4px solid transparent;
+    }
+    .stat-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.08); transform: translateY(-1px); }
+
+    .stat-card.sc-red    { border-left-color: var(--red); }
+    .stat-card.sc-gold   { border-left-color: var(--gold); }
+    .stat-card.sc-green  { border-left-color: var(--green); }
+    .stat-card.sc-blue   { border-left-color: var(--blue); }
+
+    .stat-icon {
+      width: 44px; height: 44px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      flex-shrink: 0;
+    }
+    .si-red   { background: var(--red-light); }
+    .si-gold  { background: var(--gold-light); }
+    .si-green { background: var(--green-light); }
+    .si-blue  { background: var(--blue-light); }
+
+    .stat-info { display: flex; flex-direction: column; }
+    .stat-value { font-size: 1.5rem; font-weight: 800; color: var(--gray-900); line-height: 1; }
+    .stat-label { font-size: 0.72rem; color: var(--gray-500); margin-top: 3px; }
+
+    /* ════════════════════════════════════════
+       TWO COLUMN LAYOUT
+    ════════════════════════════════════════ */
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: 340px 1fr;
+      gap: 24px;
+      align-items: start;
+    }
+
+    /* ════════════════════════════════════════
+       STUDENT DETAILS CARD
+    ════════════════════════════════════════ */
+    .details-card {
+      background: var(--white);
+      border: 1px solid var(--gray-200);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    }
+
+    .details-card-header {
+      background: linear-gradient(135deg, var(--red) 0%, var(--red-dark) 100%);
+      padding: 22px 24px 20px;
+      position: relative;
+      overflow: hidden;
+    }
+    .details-card-header::after {
+      content: '';
+      position: absolute;
+      bottom: -20px; right: -20px;
+      width: 80px; height: 80px;
+      background: rgba(255,255,255,0.07);
+      border-radius: 50%;
+    }
+    .details-card-header::before {
+      content: '';
+      position: absolute;
+      top: -30px; right: 40px;
+      width: 100px; height: 100px;
+      background: rgba(255,255,255,0.05);
+      border-radius: 50%;
+    }
+
+    .student-avatar-big {
+      width: 60px; height: 60px;
+      background: rgba(255,255,255,0.2);
+      border: 2.5px solid rgba(255,255,255,0.5);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--white);
+      margin-bottom: 12px;
+    }
+
+    .student-name-big {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--white);
+      letter-spacing: -0.2px;
+    }
+    .student-roll-big {
+      font-size: 0.72rem;
+      color: rgba(255,255,255,0.75);
+      margin-top: 2px;
+    }
+    .student-status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: rgba(255,255,255,0.2);
+      border: 1px solid rgba(255,255,255,0.3);
+      border-radius: 999px;
+      padding: 3px 10px;
+      font-size: 0.65rem;
+      font-weight: 600;
+      color: var(--white);
+      margin-top: 8px;
+    }
+    .status-dot { width: 6px; height: 6px; background: #4ade80; border-radius: 50%; animation: blink 1.6s ease-in-out infinite; }
+
+    .details-body { padding: 20px 24px; }
+
+    .detail-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 11px 0;
+      border-bottom: 1px solid var(--gray-100);
+    }
+    .detail-row:last-child { border-bottom: none; }
+
+    .detail-key {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--gray-500);
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+    .detail-key svg { color: var(--red); }
+
+    .detail-val {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--gray-900);
+      background: var(--gray-50);
+      border: 1px solid var(--gray-100);
+      border-radius: 7px;
+      padding: 4px 12px;
+    }
+
+    /* Gold divider for VNR style */
+    .gold-divider {
+      height: 3px;
+      background: linear-gradient(90deg, var(--gold), var(--red), var(--gold));
+      width: 100%;
+      opacity: 0.5;
+    }
+
+    /* ════════════════════════════════════════
+       RIGHT PANEL
+    ════════════════════════════════════════ */
+    .right-panel { display: flex; flex-direction: column; gap: 20px; }
+
+    /* ─── Pass Options Section ─── */
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+    .section-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--gray-900);
+      letter-spacing: -0.2px;
+    }
+    .section-line {
+      flex: 1;
+      height: 1px;
+      background: var(--gray-200);
+    }
+
+    /* ─── Pass Cards Grid ─── */
+    .pass-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+    }
+
+    .pass-card {
+      background: var(--white);
+      border: 1.5px solid var(--gray-200);
+      border-radius: 16px;
+      padding: 28px 24px;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 0;
+      transition: all 0.25s cubic-bezier(0.34, 1.4, 0.64, 1);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      position: relative;
+      overflow: hidden;
+      user-select: none;
+    }
+
+    /* Subtle top stripe */
+    .pass-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 4px;
+      border-radius: 16px 16px 0 0;
+      transition: opacity 0.2s;
+      opacity: 0;
+    }
+    .pass-card.out-card::before { background: linear-gradient(90deg, var(--red), var(--red-dark)); }
+    .pass-card.home-card::before { background: linear-gradient(90deg, var(--gold), #a37408); }
+
+    .pass-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 16px 40px rgba(0,0,0,0.12);
+      border-color: transparent;
+    }
+    .pass-card.out-card:hover  { border-color: var(--red-border);  box-shadow: 0 16px 40px rgba(192,24,42,0.18); }
+    .pass-card.home-card:hover { border-color: var(--gold-soft); box-shadow: 0 16px 40px rgba(201,152,10,0.18); }
+    .pass-card:hover::before { opacity: 1; }
+
+    .pass-card:active { transform: translateY(-2px) scale(0.98); }
+
+    /* Icon circle */
+    .pass-icon {
+      width: 72px; height: 72px;
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      margin-bottom: 18px;
+      transition: transform 0.25s cubic-bezier(0.34, 1.4, 0.64, 1);
+    }
+    .pass-card:hover .pass-icon { transform: scale(1.1); }
+
+    .out-icon  { background: var(--red-light);  box-shadow: 0 4px 16px rgba(192,24,42,0.18); }
+    .home-icon { background: var(--gold-light); box-shadow: 0 4px 16px rgba(201,152,10,0.18); }
+
+    .pass-title {
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: var(--gray-900);
+      letter-spacing: -0.3px;
+      margin-bottom: 8px;
+    }
+
+    .pass-desc {
+      font-size: 0.78rem;
+      color: var(--gray-500);
+      line-height: 1.55;
+      margin-bottom: 20px;
+    }
+
+    .pass-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      border-radius: 999px;
+      padding: 6px 16px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.2px;
+      transition: all 0.2s;
+    }
+    .out-chip  { background: var(--red-light);  color: var(--red);  border: 1.5px solid var(--red-border); }
+    .home-chip { background: var(--gold-light); color: var(--gold); border: 1.5px solid var(--gold-soft);  }
+
+    .pass-card:hover .out-chip  { background: var(--red);  color: var(--white); }
+    .pass-card:hover .home-chip { background: var(--gold); color: var(--white); }
+
+    /* ─── Request History Card ─── */
+    .hist-card {
+      background: var(--white);
+      border: 1px solid var(--gray-200);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+
+    .hist-card-header {
+      padding: 16px 24px;
+      border-bottom: 1px solid var(--gray-100);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .hist-card-header h3 {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--gray-900);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .hist-card-header h3 svg { color: var(--red); }
+
+    .view-all {
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--red);
+      text-decoration: none;
+      border: 1px solid var(--red-border);
+      background: var(--red-light);
+      border-radius: 6px;
+      padding: 4px 10px;
+      transition: all 0.18s;
+    }
+    .view-all:hover { background: var(--red); color: var(--white); }
+
+    .hist-body { padding: 8px 0; }
+
+    .hist-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 13px 24px;
+      border-bottom: 1px solid var(--gray-50);
+      gap: 12px;
+      transition: background 0.15s;
+    }
+    .hist-item:last-child { border-bottom: none; }
+    .hist-item:hover { background: var(--gray-50); }
+
+    .hist-left { display: flex; align-items: center; gap: 12px; }
+
+    .hist-type-badge {
+      width: 38px; height: 38px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      flex-shrink: 0;
+    }
+    .htb-out  { background: var(--red-light); }
+    .htb-home { background: var(--gold-light); }
+
+    .hist-reason  { font-size: 0.82rem; font-weight: 600; color: var(--gray-900); }
+    .hist-date    { font-size: 0.7rem; color: var(--gray-400); margin-top: 1px; }
+
+    .hist-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 10px;
+      border-radius: 999px;
+      font-size: 0.65rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+    .hs-approved { background: var(--green-light); color: var(--green); border: 1px solid #bbf7d0; }
+    .hs-pending  { background: #fffbeb; color: #b45309; border: 1px solid #fde68a; }
+    .hs-rejected { background: var(--red-light); color: var(--red); border: 1px solid var(--red-border); }
+
+    /* ════════════════════════════════════════
+       FOOTER
+    ════════════════════════════════════════ */
+    .footer {
+      background: var(--white);
+      border-top: 1px solid var(--gray-200);
+      padding: 16px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .footer-left  { font-size: 0.7rem; color: var(--gray-500); }
+    .footer-left strong { color: var(--red); font-weight: 700; }
+    .footer-links { display: flex; gap: 18px; }
+    .footer-link  { font-size: 0.68rem; color: var(--gray-400); text-decoration: none; }
+    .footer-link:hover { color: var(--red); }
+
+    /* ════════════════════════════════════════
+       TOAST
+    ════════════════════════════════════════ */
+    #toast {
+      position: fixed;
+      bottom: 26px;
+      left: 50%;
+      transform: translateX(-50%) translateY(14px);
+      padding: 11px 24px;
+      border-radius: 999px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--white);
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.3s cubic-bezier(0.34, 1.4, 0.64, 1);
+      z-index: 9999;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.18);
+      max-width: 88vw;
+      white-space: nowrap;
+    }
+    #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+    .t-info    { background: var(--blue); }
+    .t-out     { background: var(--red); }
+    .t-home    { background: var(--gold); }
+    .t-success { background: var(--green); }
+
+    /* ════════════════════════════════════════
+       RESPONSIVE
+    ════════════════════════════════════════ */
+    @media (max-width: 1024px) {
+      .dashboard-grid { grid-template-columns: 300px 1fr; }
+      .stats-row { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 860px) {
+      .dashboard-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 640px) {
+      .navbar    { padding: 0 16px; height: 60px; }
+      .strip     { padding: 6px 16px; }
+      .page-body { padding: 24px 16px 50px; }
+      .brand-sub, .brand-tagline { display: none; }
+      .stats-row  { grid-template-columns: 1fr 1fr; gap: 10px; }
+      .pass-grid  { grid-template-columns: 1fr 1fr; }
+      .footer { padding: 14px 16px; }
+      .footer-links { display: none; }
+      .nav-user-info { display: none; }
+      .nav-badge { display: none; }
+    }
+    @media (max-width: 420px) {
+      .pass-grid { grid-template-columns: 1fr; }
+      .pass-card { padding: 22px 18px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ══ STRIP ══ -->
+  <div class="strip">
+    <span>
+      <span class="strip-dot"></span>
+      NAAC A+ Accredited &nbsp;·&nbsp; Autonomous Institution – JNTUH &nbsp;·&nbsp; VNR VJIET, Bachupally, Hyderabad
+    </span>
+    <span class="strip-right">Digital Outpass System &nbsp;·&nbsp; AY 2025–26</span>
+  </div>
+
+  <!-- ══ NAVBAR ══ -->
+  <nav class="navbar">
+    <!-- Brand / Logo -->
+    <a href="index.html" class="brand">
+      <svg class="logo-shield" viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect width="52" height="52" rx="10" fill="#c0182a"/>
+        <path d="M26 8 L40 13 L40 27 C40 35 26 44 26 44 C26 44 12 35 12 27 L12 13 Z"
+              fill="#fff" opacity="0.95"/>
+        <text x="17" y="33" font-family="Poppins,sans-serif" font-weight="800"
+              font-size="18" fill="#c0182a" letter-spacing="-1">VNR</text>
+        <rect x="12" y="38" width="28" height="3" rx="1.5" fill="#c9980a"/>
+        <circle cx="26" cy="9" r="2.5" fill="#c9980a"/>
+      </svg>
+      <div class="brand-text">
+        <span class="brand-name">VNR VJIET</span>
+        <span class="brand-sub">Vallurupalli Nageswara Rao Vignana Jyothi Institute of Engineering &amp; Technology</span>
+        <span class="brand-tagline">✦ Empowering Minds, Building Futures ✦</span>
+      </div>
+    </a>
+
+    <!-- Nav Right -->
+    <div class="nav-right">
+      <span class="nav-badge">Student</span>
+      <div class="nav-user">
+        <div class="nav-avatar" id="nav-avatar">A</div>
+        <div class="nav-user-info">
+          <span class="nav-user-name" id="nav-name">Aarav Singh</span>
+          <span class="nav-user-role" id="nav-roll">22VV1A0501 · CSE-A</span>
+        </div>
+      </div>
+      <a href="index.html" class="btn-logout">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+          <polyline points="16,17 21,12 16,7"/>
+          <line x1="21" y1="12" x2="9" y2="12"/>
+        </svg>
+        Logout
+      </a>
+    </div>
+  </nav>
+
+  <!-- ══ PAGE BODY ══ -->
+  <div class="page-body">
+
+    <!-- Welcome Section -->
+    <div class="welcome-section">
+      <div class="welcome-left">
+        <div class="welcome-greeting">
+          Welcome back, <span id="welcome-name">Aarav</span> 👋
+        </div>
+        <div class="welcome-sub">Manage your outpass requests from your dashboard</div>
+      </div>
+      <div class="welcome-date">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="4" width="18" height="18" rx="2"/>
+          <line x1="16" y1="2" x2="16" y2="6"/>
+          <line x1="8" y1="2" x2="8" y2="6"/>
+          <line x1="3" y1="10" x2="21" y2="10"/>
+        </svg>
+        <span id="today-date"></span>
+      </div>
+    </div>
+
+    <!-- Stats Row -->
+    <div class="stats-row">
+      <div class="stat-card sc-blue">
+        <div class="stat-icon si-blue">📋</div>
+        <div class="stat-info">
+          <span class="stat-value">5</span>
+          <span class="stat-label">Total Requests</span>
+        </div>
+      </div>
+      <div class="stat-card sc-green">
+        <div class="stat-icon si-green">✅</div>
+        <div class="stat-info">
+          <span class="stat-value">3</span>
+          <span class="stat-label">Approved</span>
+        </div>
+      </div>
+      <div class="stat-card sc-gold">
+        <div class="stat-icon si-gold">⏳</div>
+        <div class="stat-info">
+          <span class="stat-value">1</span>
+          <span class="stat-label">Pending</span>
+        </div>
+      </div>
+      <div class="stat-card sc-red">
+        <div class="stat-icon si-red">❌</div>
+        <div class="stat-info">
+          <span class="stat-value">1</span>
+          <span class="stat-label">Rejected</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Dashboard Grid -->
+    <div class="dashboard-grid">
+
+      <!-- LEFT: Student Details Card -->
+      <div class="details-card">
+
+        <div class="details-card-header">
+          <div class="student-avatar-big" id="detail-avatar">A</div>
+          <div class="student-name-big" id="detail-name">Aarav Singh</div>
+          <div class="student-roll-big" id="detail-roll">22VV1A0501</div>
+          <div class="student-status-pill">
+            <span class="status-dot"></span> Active Student
+          </div>
+        </div>
+
+        <div class="gold-divider"></div>
+
+        <div class="details-body">
+
+          <div class="detail-row">
+            <div class="detail-key">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="7" width="20" height="14" rx="2"/>
+                <path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/>
+              </svg>
+              Roll No.
+            </div>
+            <div class="detail-val" id="d-roll">22VV1A0501</div>
+          </div>
+
+          <div class="detail-row">
+            <div class="detail-key">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
+                <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+              </svg>
+              Branch
+            </div>
+            <div class="detail-val" id="d-branch">CSE</div>
+          </div>
+
+          <div class="detail-row">
+            <div class="detail-key">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                <circle cx="9" cy="7" r="4"/>
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+              </svg>
+              Section
+            </div>
+            <div class="detail-val" id="d-section">Section A</div>
+          </div>
+
+          <div class="detail-row">
+            <div class="detail-key">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="4" width="18" height="18" rx="2"/>
+                <line x1="16" y1="2" x2="16" y2="6"/>
+                <line x1="8" y1="2" x2="8" y2="6"/>
+                <line x1="3" y1="10" x2="21" y2="10"/>
+              </svg>
+              Year
+            </div>
+            <div class="detail-val" id="d-year">3rd Year</div>
+          </div>
+
+          <div class="detail-row">
+            <div class="detail-key">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                <polyline points="9 22 9 12 15 12 15 22"/>
+              </svg>
+              Room No.
+            </div>
+            <div class="detail-val" id="d-room">CS-301</div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- RIGHT PANEL -->
+      <div class="right-panel">
+
+        <!-- Pass Options -->
+        <div>
+          <div class="section-header">
+            <div class="section-title">🎫 Apply for a Pass</div>
+            <div class="section-line"></div>
+          </div>
+
+          <div class="pass-grid">
+
+            <!-- Out Pass Card -->
+            <div class="pass-card out-card" id="out-pass-card" onclick="handleOutPass()" role="button" tabindex="0" aria-label="Apply for Out Pass">
+              <div class="pass-icon out-icon">🚪</div>
+              <div class="pass-title">Out Pass</div>
+              <div class="pass-desc">Apply for a short-duration exit from the campus premises during college hours.</div>
+              <div class="pass-chip out-chip">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+                </svg>
+                Apply Now
+              </div>
+            </div>
+
+            <!-- Home Pass Card -->
+            <div class="pass-card home-card" id="home-pass-card" onclick="handleHomePass()" role="button" tabindex="0" aria-label="Apply for Home Pass">
+              <div class="pass-icon home-icon">🏠</div>
+              <div class="pass-title">Home Pass</div>
+              <div class="pass-desc">Request permission to travel home for holidays, emergencies, or personal reasons.</div>
+              <div class="pass-chip home-chip">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+                </svg>
+                Apply Now
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Request History -->
+        <div class="hist-card">
+          <div class="hist-card-header">
+            <h3>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                <polyline points="14 2 14 8 20 8"/>
+                <line x1="16" y1="13" x2="8" y2="13"/>
+                <line x1="16" y1="17" x2="8" y2="17"/>
+              </svg>
+              Recent Requests
+            </h3>
+            <a href="#" class="view-all" onclick="return false;">View All</a>
+          </div>
+          <div class="hist-body" id="history-list">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ FOOTER ══ -->
+  <footer class="footer">
+    <div class="footer-left">
+      &copy; 2026 <strong>VNR VJIET</strong> &nbsp;·&nbsp; Digital Outpass System &nbsp;·&nbsp; All rights reserved.
+    </div>
+    <div class="footer-links">
+      <a href="#" class="footer-link">Privacy Policy</a>
+      <a href="#" class="footer-link">Terms of Use</a>
+      <a href="#" class="footer-link">IT Support</a>
+      <a href="index.html" class="footer-link">Login Page</a>
+    </div>
+  </footer>
+
+  <!-- Toast -->
+  <div id="toast"></div>
+
+  <script>
+    /* ─── Student Data (would come from backend in production) ─── */
+    const student = {
+      name:    'Aarav Singh',
+      roll:    '22VV1A0501',
+      branch:  'CSE',
+      section: 'Section A',
+      year:    '3rd Year',
+      room:    'CS-301',
+    };
+
+    /* ─── Populate UI ─── */
+    const initials = student.name.split(' ').map(n => n[0]).join('');
+    document.getElementById('nav-avatar').textContent    = initials;
+    document.getElementById('nav-name').textContent      = student.name;
+    document.getElementById('nav-roll').textContent      = student.roll + ' · ' + student.branch + '-' + student.section.replace('Section ', '');
+    document.getElementById('detail-avatar').textContent = initials;
+    document.getElementById('detail-name').textContent   = student.name;
+    document.getElementById('detail-roll').textContent   = student.roll;
+    document.getElementById('welcome-name').textContent  = student.name.split(' ')[0];
+    document.getElementById('d-roll').textContent        = student.roll;
+    document.getElementById('d-branch').textContent      = student.branch;
+    document.getElementById('d-section').textContent     = student.section;
+    document.getElementById('d-year').textContent        = student.year;
+    document.getElementById('d-room').textContent        = student.room;
+
+    /* ─── Date ─── */
+    document.getElementById('today-date').textContent =
+      new Date().toLocaleDateString('en-IN', { weekday: 'short', day: 'numeric', month: 'long', year: 'numeric' });
+
+    /* ─── Toast ─── */
+    function showToast(msg, type = 'info') {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.className   = `show t-${type}`;
+      clearTimeout(t._timer);
+      t._timer = setTimeout(() => { t.className = ''; }, 3400);
+    }
+
+    /* ─── Pass Handlers ─── */
+    function handleOutPass() {
+      console.log('════════════════════════════════');
+      console.log('  Out Pass clicked               ');
+      console.log('  Student :', student.name);
+      console.log('  Roll    :', student.roll);
+      console.log('════════════════════════════════');
+      showToast('🚪  Out Pass selected — redirecting to form…', 'out');
+    }
+
+    function handleHomePass() {
+      console.log('════════════════════════════════');
+      console.log('  Home Pass clicked              ');
+      console.log('  Student :', student.name);
+      console.log('  Roll    :', student.roll);
+      console.log('════════════════════════════════');
+      showToast('🏠  Home Pass selected — redirecting to form…', 'home');
+    }
+
+    /* Keyboard accessibility */
+    document.getElementById('out-pass-card').addEventListener('keydown',  e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleOutPass();  } });
+    document.getElementById('home-pass-card').addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleHomePass(); } });
+
+    /* ─── History Data ─── */
+    const history = [
+      { type: 'out',  reason: 'Medical Appointment', date: 'Apr 7, 2026 · 10:00 AM',  status: 'approved' },
+      { type: 'home', reason: 'Home Visit (Ugadi)',   date: 'Apr 3, 2026 · 5:00 PM',   status: 'approved' },
+      { type: 'out',  reason: 'Personal Work',        date: 'Mar 28, 2026 · 2:30 PM',  status: 'pending'  },
+      { type: 'home', reason: 'Family Emergency',     date: 'Mar 20, 2026 · 9:00 AM',  status: 'rejected' },
+      { type: 'out',  reason: 'Sports Event',         date: 'Mar 15, 2026 · 11:00 AM', status: 'approved' },
+    ];
+
+    const statusCls = {
+      approved: 'hs-approved',
+      pending:  'hs-pending',
+      rejected: 'hs-rejected',
+    };
+    const statusLabel = { approved: '✓ Approved', pending: '⏳ Pending', rejected: '✕ Rejected' };
+    const typeIcon    = { out: '🚪', home: '🏠' };
+    const typeCls     = { out: 'htb-out', home: 'htb-home' };
+
+    document.getElementById('history-list').innerHTML = history.map(h => `
+      <div class="hist-item">
+        <div class="hist-left">
+          <div class="hist-type-badge ${typeCls[h.type]}">${typeIcon[h.type]}</div>
+          <div>
+            <div class="hist-reason">${h.reason}</div>
+            <div class="hist-date">${h.date}</div>
+          </div>
+        </div>
+        <span class="hist-status ${statusCls[h.status]}">${statusLabel[h.status]}</span>
+      </div>
+    `).join('');
+  </script>
+</body>
+</html>

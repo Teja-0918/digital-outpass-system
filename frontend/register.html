@@ -1,0 +1,1106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Student Registration — VNR VJIET Digital Outpass System</title>
+  <meta name="description" content="Register for the VNR VJIET Digital Outpass System — Smart QR-Based Exit Management" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ════════════════════════════════════════
+       RESET & ROOT
+    ════════════════════════════════════════ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --red:        #c0182a;
+      --red-dark:   #9b1020;
+      --red-hover:  #a8141f;
+      --red-light:  #fef2f2;
+      --red-border: #fca5a5;
+      --gold:       #c9980a;
+      --gold-light: #fefce8;
+      --gold-soft:  #fde68a;
+      --white:      #ffffff;
+      --gray-50:    #f9fafb;
+      --gray-100:   #f3f4f6;
+      --gray-200:   #e5e7eb;
+      --gray-300:   #d1d5db;
+      --gray-400:   #9ca3af;
+      --gray-500:   #6b7280;
+      --gray-600:   #4b5563;
+      --gray-700:   #374151;
+      --gray-900:   #111827;
+      --green:      #15803d;
+      --green-light:#f0fdf4;
+      --shadow-card: 0 4px 6px rgba(0,0,0,0.04), 0 12px 40px rgba(192,24,42,0.09), 0 1px 2px rgba(0,0,0,0.04);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: var(--white);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      color: var(--gray-900);
+    }
+
+    /* ════════════════════════════════════════
+       ANNOUNCEMENT STRIP
+    ════════════════════════════════════════ */
+    .strip {
+      background: linear-gradient(90deg, var(--red-dark), var(--red), #a01122);
+      padding: 7px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.68rem;
+      color: rgba(255,255,255,0.85);
+    }
+    .strip-left { display: flex; align-items: center; gap: 8px; }
+    .strip-dot  {
+      width: 6px; height: 6px;
+      background: var(--gold);
+      border-radius: 50%;
+      animation: blink 1.6s ease-in-out infinite;
+      flex-shrink: 0;
+    }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+    .strip-links { display: flex; gap: 16px; }
+    .strip-links a {
+      color: var(--gold-soft);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.68rem;
+    }
+    .strip-links a:hover { text-decoration: underline; }
+
+    /* ════════════════════════════════════════
+       HEADER
+    ════════════════════════════════════════ */
+    .header {
+      background: var(--white);
+      border-bottom: 3px solid var(--red);
+      padding: 0 40px;
+      height: 70px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 2px 12px rgba(192,24,42,0.09);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .brand { display: flex; align-items: center; gap: 14px; text-decoration: none; }
+
+    .logo-shield {
+      width: 50px; height: 50px;
+      flex-shrink: 0;
+    }
+
+    .brand-text { display: flex; flex-direction: column; line-height: 1.25; }
+    .brand-name     { font-size: 1.1rem; font-weight: 800; color: var(--red); letter-spacing: -0.2px; }
+    .brand-fullname { font-size: 0.58rem; font-weight: 400; color: var(--gray-500); max-width: 340px; }
+    .brand-tagline  { font-size: 0.6rem; font-weight: 600; color: var(--gold); font-style: italic; margin-top: 1px; }
+
+    .header-badge {
+      font-size: 0.65rem;
+      font-weight: 700;
+      color: var(--red);
+      background: var(--red-light);
+      border: 1px solid var(--red-border);
+      border-radius: 6px;
+      padding: 5px 11px;
+      letter-spacing: 0.3px;
+      text-transform: uppercase;
+    }
+
+    /* ════════════════════════════════════════
+       HERO BAND (page contextual header)
+    ════════════════════════════════════════ */
+    .hero-band {
+      background: linear-gradient(135deg, var(--gray-50) 0%, var(--white) 60%, #fff8f8 100%);
+      border-bottom: 1px solid var(--gray-200);
+      padding: 36px 40px 28px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-band::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, var(--gold), var(--red), var(--gold), transparent);
+      opacity: 0.45;
+    }
+
+    .hero-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--red-light);
+      color: var(--red);
+      border: 1px solid var(--red-border);
+      border-radius: 999px;
+      padding: 4px 14px;
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+    .hero-title {
+      font-size: 1.75rem;
+      font-weight: 800;
+      color: var(--gray-900);
+      letter-spacing: -0.5px;
+    }
+    .hero-title .accent { color: var(--red); }
+    .hero-sub {
+      font-size: 0.82rem;
+      color: var(--gray-500);
+      margin-top: 5px;
+    }
+    .hero-divider {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 16px;
+    }
+    .hd-line    { width: 36px; height: 2px; background: var(--gold); border-radius: 2px; opacity: 0.6; }
+    .hd-diamond { width: 7px; height: 7px; background: var(--red); transform: rotate(45deg); border-radius: 1.5px; opacity: 0.7; }
+
+    /* ════════════════════════════════════════
+       MAIN CONTENT
+    ════════════════════════════════════════ */
+    .main {
+      flex: 1;
+      background: var(--gray-50);
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 40px 16px 64px;
+    }
+
+    /* ════════════════════════════════════════
+       REGISTRATION CARD
+    ════════════════════════════════════════ */
+    .reg-card {
+      width: 100%;
+      max-width: 580px;
+      background: var(--white);
+      border: 1px solid var(--gray-200);
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: var(--shadow-card);
+    }
+
+    .card-bar {
+      height: 5px;
+      background: linear-gradient(90deg, var(--red-dark), var(--red), var(--gold));
+    }
+
+    .card-body { padding: 36px 40px 30px; }
+
+    /* Card Head */
+    .card-head {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 28px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--gray-100);
+    }
+    .card-head-icon {
+      width: 50px; height: 50px;
+      background: linear-gradient(135deg, var(--red), var(--red-dark));
+      border-radius: 13px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 16px rgba(192,24,42,0.28);
+      flex-shrink: 0;
+    }
+    .card-head-text h2 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--gray-900);
+      letter-spacing: -0.2px;
+    }
+    .card-head-text p {
+      font-size: 0.77rem;
+      color: var(--gray-500);
+      margin-top: 2px;
+    }
+
+    /* ─── Section heading ─── */
+    .section-head {
+      font-size: 0.68rem;
+      font-weight: 700;
+      color: var(--red);
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      margin: 20px 0 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .section-head::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--gray-200);
+    }
+
+    /* ─── Field ─── */
+    .field { margin-bottom: 16px; }
+    .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+    .field-label {
+      display: block;
+      font-size: 0.76rem;
+      font-weight: 600;
+      color: var(--gray-700);
+      margin-bottom: 6px;
+    }
+    .field-label .req { color: var(--red); margin-left: 2px; }
+
+    .input-wrap { position: relative; }
+
+    .f-icon {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--gray-400);
+      display: flex;
+      align-items: center;
+      pointer-events: none;
+      transition: color 0.18s;
+    }
+    .input-wrap:focus-within .f-icon { color: var(--red); }
+
+    .field-input {
+      width: 100%;
+      padding: 10px 13px 10px 38px;
+      border: 1.5px solid var(--gray-200);
+      border-radius: 9px;
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 400;
+      color: var(--gray-900);
+      background: #fafafa;
+      outline: none;
+      transition: all 0.2s ease;
+      appearance: none;
+      -webkit-appearance: none;
+    }
+    .field-input::placeholder { color: var(--gray-300); }
+    .field-input:focus {
+      border-color: var(--red);
+      background: var(--white);
+      box-shadow: 0 0 0 3px rgba(192,24,42,0.08);
+    }
+    .field-input.error {
+      border-color: var(--red);
+      background: var(--red-light);
+    }
+    .field-input.success {
+      border-color: var(--green);
+      background: var(--green-light);
+    }
+
+    /* Select arrow */
+    .select-wrap { position: relative; }
+    .select-arrow {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--gray-400);
+      pointer-events: none;
+      display: flex;
+    }
+    select.field-input { padding-right: 34px; cursor: pointer; }
+
+    /* Password toggle */
+    .pw-eye {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--gray-400);
+      display: flex;
+      padding: 4px;
+      border-radius: 5px;
+      transition: color 0.18s;
+    }
+    .pw-eye:hover { color: var(--red); }
+
+    /* Error message */
+    .field-err {
+      font-size: 0.7rem;
+      color: var(--red);
+      font-weight: 500;
+      margin-top: 4px;
+      display: none;
+      align-items: center;
+      gap: 4px;
+    }
+    .field-err.show { display: flex; }
+
+    /* Password strength */
+    .pw-strength {
+      margin-top: 6px;
+      display: none;
+    }
+    .pw-strength.show { display: block; }
+    .strength-bar { height: 4px; border-radius: 2px; background: var(--gray-200); overflow: hidden; margin-bottom: 4px; }
+    .strength-fill {
+      height: 100%;
+      border-radius: 2px;
+      width: 0%;
+      transition: width 0.3s ease, background 0.3s;
+    }
+    .strength-text { font-size: 0.68rem; font-weight: 600; }
+
+    /* ─── Important Note ─── */
+    .note-box {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      background: #fffbeb;
+      border: 1px solid #fde68a;
+      border-left: 4px solid var(--gold);
+      border-radius: 9px;
+      padding: 12px 14px;
+      margin: 20px 0;
+    }
+    .note-icon { font-size: 1.1rem; flex-shrink: 0; margin-top: 1px; }
+    .note-text { font-size: 0.78rem; color: #78350f; line-height: 1.6; }
+    .note-text strong { font-weight: 700; color: #78350f; }
+
+    /* ─── Register Button ─── */
+    .btn-register {
+      width: 100%;
+      padding: 13px;
+      border: none;
+      border-radius: 9px;
+      background: linear-gradient(135deg, var(--red), var(--red-dark));
+      color: var(--white);
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.92rem;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      box-shadow: 0 4px 18px rgba(192,24,42,0.33);
+      transition: all 0.22s ease;
+      margin-top: 6px;
+      position: relative;
+      overflow: hidden;
+    }
+    .btn-register::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(255,255,255,0);
+      transition: 0.2s;
+    }
+    .btn-register:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 26px rgba(192,24,42,0.42);
+    }
+    .btn-register:hover::before { background: rgba(255,255,255,0.07); }
+    .btn-register:active { transform: scale(0.98); }
+    .btn-register:disabled { opacity: 0.7; cursor: not-allowed; transform: none; }
+
+    /* ─── Login Link ─── */
+    .login-link {
+      text-align: center;
+      margin-top: 16px;
+      font-size: 0.8rem;
+      color: var(--gray-500);
+    }
+    .login-link a {
+      color: var(--red);
+      font-weight: 700;
+      text-decoration: none;
+    }
+    .login-link a:hover { text-decoration: underline; }
+
+    /* ─── Card Footer ─── */
+    .card-footer {
+      background: var(--gray-50);
+      border-top: 1px solid var(--gray-200);
+      padding: 13px 40px;
+      text-align: center;
+      font-size: 0.68rem;
+      color: var(--gray-400);
+      line-height: 1.7;
+    }
+    .card-footer a { color: var(--red); font-weight: 600; text-decoration: none; }
+    .card-footer a:hover { text-decoration: underline; }
+
+    /* ════════════════════════════════════════
+       FOOTER
+    ════════════════════════════════════════ */
+    .footer {
+      background: var(--white);
+      border-top: 1px solid var(--gray-200);
+      padding: 16px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .footer-left  { font-size: 0.7rem; color: var(--gray-500); }
+    .footer-left strong { color: var(--red); font-weight: 700; }
+    .footer-right { display: flex; gap: 18px; }
+    .footer-link  { font-size: 0.68rem; color: var(--gray-400); text-decoration: none; }
+    .footer-link:hover { color: var(--red); }
+
+    /* ════════════════════════════════════════
+       TOAST
+    ════════════════════════════════════════ */
+    #toast {
+      position: fixed;
+      bottom: 26px;
+      left: 50%;
+      transform: translateX(-50%) translateY(14px);
+      padding: 11px 22px;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--white);
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.3s cubic-bezier(0.34, 1.4, 0.64, 1);
+      white-space: nowrap;
+      z-index: 9999;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.18);
+      max-width: 90vw;
+    }
+    #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+    .t-success { background: var(--green); }
+    .t-error   { background: var(--red); }
+    .t-warn    { background: #d97706; }
+
+    /* Spinner */
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .spinner {
+      width: 16px; height: 16px;
+      border: 2.5px solid rgba(255,255,255,0.35);
+      border-top-color: var(--white);
+      border-radius: 50%;
+      animation: spin 0.75s linear infinite;
+      display: inline-block;
+      flex-shrink: 0;
+    }
+
+    /* ════════════════════════════════════════
+       RESPONSIVE
+    ════════════════════════════════════════ */
+    @media (max-width: 640px) {
+      .header  { padding: 0 16px; height: 60px; }
+      .strip   { padding: 6px 16px; }
+      .strip-links { display: none; }
+      .brand-fullname, .header-badge { display: none; }
+      .hero-band  { padding: 28px 16px 22px; }
+      .hero-title { font-size: 1.4rem; }
+      .main { padding: 24px 10px 50px; }
+      .card-body  { padding: 26px 18px 22px; }
+      .card-footer { padding: 12px 18px; }
+      .field-row { grid-template-columns: 1fr; }
+      .footer { padding: 14px 16px; }
+      .footer-right { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ══ ANNOUNCEMENT STRIP ══ -->
+  <div class="strip">
+    <div class="strip-left">
+      <div class="strip-dot"></div>
+      <span>NAAC A+ Accredited &nbsp;|&nbsp; NBA Accredited Programs &nbsp;|&nbsp; Autonomous – Affiliated to JNTUH &nbsp;|&nbsp; Admissions Open 2025–26</span>
+    </div>
+    <div class="strip-links">
+      <a href="index.html">Login Portal</a>
+      <a href="#">IT Helpdesk</a>
+    </div>
+  </div>
+
+  <!-- ══ HEADER ══ -->
+  <header class="header">
+    <a href="index.html" class="brand">
+      <svg class="logo-shield" viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect width="52" height="52" rx="10" fill="#c0182a"/>
+        <path d="M26 8 L40 13 L40 27 C40 35 26 44 26 44 C26 44 12 35 12 27 L12 13 Z" fill="#fff" opacity="0.95"/>
+        <text x="17" y="33" font-family="Poppins,sans-serif" font-weight="800" font-size="18" fill="#c0182a" letter-spacing="-1">VNR</text>
+        <rect x="12" y="38" width="28" height="3" rx="1.5" fill="#c9980a"/>
+        <circle cx="26" cy="9" r="2.5" fill="#c9980a"/>
+      </svg>
+      <div class="brand-text">
+        <span class="brand-name">VNR VJIET</span>
+        <span class="brand-fullname">Vallurupalli Nageswara Rao Vignana Jyothi Institute of Engineering &amp; Technology</span>
+        <span class="brand-tagline">✦ Empowering Minds, Building Futures ✦</span>
+      </div>
+    </a>
+    <span class="header-badge">NAAC A+</span>
+  </header>
+
+  <!-- ══ HERO BAND ══ -->
+  <div class="hero-band">
+    <div class="hero-pill">
+      <svg width="7" height="7" viewBox="0 0 8 8" fill="currentColor"><circle cx="4" cy="4" r="3.5"/></svg>
+      New Student Registration
+    </div>
+    <h1 class="hero-title">Student <span class="accent">Registration</span></h1>
+    <p class="hero-sub">Digital Outpass System &nbsp;·&nbsp; VNR VJIET, Bachupally</p>
+    <div class="hero-divider">
+      <div class="hd-line"></div><div class="hd-diamond"></div><div class="hd-line"></div>
+    </div>
+  </div>
+
+  <!-- ══ MAIN ══ -->
+  <main class="main">
+    <div class="reg-card">
+
+      <div class="card-bar"></div>
+
+      <div class="card-body">
+
+        <!-- Card Head -->
+        <div class="card-head">
+          <div class="card-head-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+              <circle cx="9" cy="7" r="4"/>
+              <path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+            </svg>
+          </div>
+          <div class="card-head-text">
+            <h2>Create Your Account</h2>
+            <p>Fill in the details below to register for the Outpass System</p>
+          </div>
+        </div>
+
+        <form id="reg-form" novalidate>
+
+          <!-- ── ACADEMIC DETAILS ── -->
+          <div class="section-head">Academic Details</div>
+
+          <div class="field-row">
+            <!-- Roll Number -->
+            <div class="field">
+              <label class="field-label" for="roll">Roll Number <span class="req">*</span></label>
+              <div class="input-wrap">
+                <span class="f-icon">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/>
+                    <line x1="12" y1="12" x2="12" y2="16"/><line x1="10" y1="14" x2="14" y2="14"/>
+                  </svg>
+                </span>
+                <input type="text" id="roll" class="field-input" placeholder="e.g. 22VV1A0501" maxlength="12" />
+              </div>
+              <div class="field-err" id="roll-err">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                <span id="roll-err-msg">Please enter your roll number</span>
+              </div>
+            </div>
+
+            <!-- Full Name -->
+            <div class="field">
+              <label class="field-label" for="fullname">Full Name <span class="req">*</span></label>
+              <div class="input-wrap">
+                <span class="f-icon">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+                  </svg>
+                </span>
+                <input type="text" id="fullname" class="field-input" placeholder="As per records" />
+              </div>
+              <div class="field-err" id="name-err">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                Please enter your full name
+              </div>
+            </div>
+          </div>
+
+          <div class="field-row">
+            <!-- Branch -->
+            <div class="field">
+              <label class="field-label" for="branch">Branch <span class="req">*</span></label>
+              <div class="select-wrap">
+                <span class="f-icon" style="left:12px;">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
+                    <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+                  </svg>
+                </span>
+                <select id="branch" class="field-input" style="padding-left:38px;padding-right:34px;">
+                  <option value="">Select Branch</option>
+                  <option>CSE</option>
+                  <option>CSE (Data Science)</option>
+                  <option>CSE (AI & ML)</option>
+                  <option>CSE (Cyber Security)</option>
+                  <option>ECE</option>
+                  <option>EEE</option>
+                  <option>IT</option>
+                  <option>MECH</option>
+                  <option>CIVIL</option>
+                  <option>MBA</option>
+                </select>
+                <span class="select-arrow">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="6 9 12 15 18 9"/>
+                  </svg>
+                </span>
+              </div>
+              <div class="field-err" id="branch-err">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                Please select your branch
+              </div>
+            </div>
+
+            <!-- Section -->
+            <div class="field">
+              <label class="field-label" for="section">Section <span class="req">*</span></label>
+              <div class="select-wrap">
+                <span class="f-icon" style="left:12px;">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>
+                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                  </svg>
+                </span>
+                <select id="section" class="field-input" style="padding-left:38px;padding-right:34px;">
+                  <option value="">Select Section</option>
+                  <option>A</option>
+                  <option>B</option>
+                  <option>C</option>
+                  <option>D</option>
+                  <option>E</option>
+                  <option>F</option>
+                </select>
+                <span class="select-arrow">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="6 9 12 15 18 9"/>
+                  </svg>
+                </span>
+              </div>
+              <div class="field-err" id="section-err">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                Please select your section
+              </div>
+            </div>
+          </div>
+
+          <!-- Year & Room Number -->
+          <div class="field-row">
+            <!-- Year -->
+            <div class="field">
+              <label class="field-label" for="year">Academic Year <span class="req">*</span></label>
+              <div class="select-wrap">
+                <span class="f-icon" style="left:12px;">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/>
+                    <line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+                  </svg>
+                </span>
+                <select id="year" class="field-input" style="padding-left:38px;padding-right:34px;">
+                  <option value="">Select Year</option>
+                  <option>1st Year</option>
+                  <option>2nd Year</option>
+                  <option>3rd Year</option>
+                  <option>4th Year</option>
+                </select>
+                <span class="select-arrow">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="6 9 12 15 18 9"/>
+                  </svg>
+                </span>
+              </div>
+              <div class="field-err" id="year-err">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                Please select academic year
+              </div>
+            </div>
+
+            <!-- Room Number -->
+            <div class="field">
+              <label class="field-label" for="room">Room Number <span class="req">*</span></label>
+              <div class="input-wrap">
+                <span class="f-icon">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                    <polyline points="9 22 9 12 15 12 15 22"/>
+                  </svg>
+                </span>
+                <input type="text" id="room" class="field-input" placeholder="e.g. CS-301" />
+              </div>
+              <div class="field-err" id="room-err">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                Please enter your room number
+              </div>
+            </div>
+          </div>
+
+          <!-- ── CONTACT DETAILS ── -->
+          <div class="section-head">Contact Details</div>
+
+          <div class="field">
+            <label class="field-label" for="phone">Mobile Number <span class="req">*</span></label>
+            <div class="input-wrap">
+              <span class="f-icon">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/>
+                </svg>
+              </span>
+              <input type="tel" id="phone" class="field-input" placeholder="e.g. 9876543210" maxlength="10" />
+            </div>
+            <div class="field-err" id="phone-err">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+              Please enter a valid 10-digit mobile number
+            </div>
+          </div>
+
+          <!-- ── SECURITY ── -->
+          <div class="section-head">Security Credentials</div>
+
+          <!-- Password -->
+          <div class="field">
+            <label class="field-label" for="password">Password <span class="req">*</span></label>
+            <div class="input-wrap">
+              <span class="f-icon">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                </svg>
+              </span>
+              <input type="password" id="password" class="field-input" placeholder="Minimum 8 characters" oninput="checkStrength()" />
+              <button type="button" class="pw-eye" onclick="togglePw('password','eye1')">
+                <svg id="eye1" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+                </svg>
+              </button>
+            </div>
+            <div class="pw-strength" id="pw-strength">
+              <div class="strength-bar"><div class="strength-fill" id="strength-fill"></div></div>
+              <div class="strength-text" id="strength-text"></div>
+            </div>
+            <div class="field-err" id="pw-err">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+              <span id="pw-err-msg">Password must be at least 8 characters</span>
+            </div>
+          </div>
+
+          <!-- Confirm Password -->
+          <div class="field">
+            <label class="field-label" for="confirm">Confirm Password <span class="req">*</span></label>
+            <div class="input-wrap">
+              <span class="f-icon">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                </svg>
+              </span>
+              <input type="password" id="confirm" class="field-input" placeholder="Re-enter your password" />
+              <button type="button" class="pw-eye" onclick="togglePw('confirm','eye2')">
+                <svg id="eye2" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+                </svg>
+              </button>
+            </div>
+            <div class="field-err" id="confirm-err">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+              Passwords do not match
+            </div>
+          </div>
+
+          <!-- ── IMPORTANT NOTE ── -->
+          <div class="note-box">
+            <div class="note-icon">⚠️</div>
+            <div class="note-text">
+              <strong>Important:</strong> Your parent's phone number is already registered with the administration for security purposes. All outpass requests will be sent to your parent for approval via the registered number. For any changes, contact the administration office.
+            </div>
+          </div>
+
+          <!-- Terms checkbox -->
+          <div class="field" style="margin-bottom:20px;">
+            <label style="display:flex;align-items:flex-start;gap:9px;cursor:pointer;font-size:0.78rem;color:var(--gray-600);">
+              <input type="checkbox" id="terms" style="accent-color:var(--red);margin-top:2px;width:14px;height:14px;flex-shrink:0;" />
+              I agree to the <a href="#" style="color:var(--red);font-weight:600;text-decoration:none;" onclick="return false;">&nbsp;Terms &amp; Conditions</a>&nbsp; and confirm that the information provided is accurate.
+            </label>
+            <div class="field-err" id="terms-err" style="margin-top:4px;">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+              Please accept the terms to continue
+            </div>
+          </div>
+
+          <!-- Submit -->
+          <button type="submit" class="btn-register" id="reg-btn">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+              <circle cx="9" cy="7" r="4"/>
+              <path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
+              <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+            </svg>
+            Register Now
+          </button>
+
+          <!-- Login link -->
+          <div class="login-link">
+            Already registered? &nbsp;<a href="index.html">Login here →</a>
+          </div>
+
+        </form>
+      </div>
+
+      <!-- Card Footer -->
+      <div class="card-footer">
+        Need help? &nbsp;
+        <a href="#">IT Help Desk</a> &nbsp;|&nbsp;
+        <a href="#">Student Registration Guide</a> &nbsp;|&nbsp;
+        <a href="#">Contact Administration</a>
+        <br />
+        &copy; 2026 VNR VJIET, Bachupally, Hyderabad – 500090. All rights reserved.
+      </div>
+
+    </div>
+  </main>
+
+  <!-- ══ FOOTER ══ -->
+  <footer class="footer">
+    <div class="footer-left">
+      &copy; 2026 <strong>VNR VJIET</strong> &nbsp;·&nbsp; Autonomous Institution – JNTUH &nbsp;·&nbsp; NAAC A+ Accredited
+    </div>
+    <div class="footer-right">
+      <a href="#" class="footer-link">Privacy Policy</a>
+      <a href="#" class="footer-link">Terms of Use</a>
+      <a href="#" class="footer-link">IT Support</a>
+    </div>
+  </footer>
+
+  <!-- Toast -->
+  <div id="toast"></div>
+
+  <script>
+    /* ─── Password visibility toggle ─── */
+    function togglePw(inputId, iconId) {
+      const inp = document.getElementById(inputId);
+      const ico = document.getElementById(iconId);
+      const show = inp.type === 'password';
+      inp.type = show ? 'text' : 'password';
+      ico.innerHTML = show
+        ? `<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/>
+           <path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/>
+           <line x1="1" y1="1" x2="23" y2="23"/>`
+        : `<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>`;
+    }
+
+    /* ─── Password strength ─── */
+    function checkStrength() {
+      const pw  = document.getElementById('password').value;
+      const str = document.getElementById('pw-strength');
+      const bar = document.getElementById('strength-fill');
+      const txt = document.getElementById('strength-text');
+
+      if (!pw) { str.classList.remove('show'); return; }
+      str.classList.add('show');
+
+      let score = 0;
+      if (pw.length >= 8)  score++;
+      if (pw.length >= 12) score++;
+      if (/[A-Z]/.test(pw)) score++;
+      if (/[0-9]/.test(pw)) score++;
+      if (/[^A-Za-z0-9]/.test(pw)) score++;
+
+      const levels = [
+        { w: '20%', color: '#dc2626', label: 'Very Weak',  labelColor: '#dc2626' },
+        { w: '40%', color: '#f97316', label: 'Weak',       labelColor: '#f97316' },
+        { w: '60%', color: '#eab308', label: 'Fair',       labelColor: '#ca8a04' },
+        { w: '80%', color: '#22c55e', label: 'Strong',     labelColor: '#16a34a' },
+        { w: '100%',color: '#15803d', label: 'Very Strong',labelColor: '#15803d' },
+      ];
+      const lvl = levels[Math.min(score - 1, 4)] || levels[0];
+      bar.style.width    = lvl.w;
+      bar.style.background = lvl.color;
+      txt.style.color    = lvl.labelColor;
+      txt.textContent    = lvl.label;
+    }
+
+    /* ─── Show / hide error ─── */
+    function showErr(id, show) {
+      const el = document.getElementById(id);
+      if (show) el.classList.add('show');
+      else      el.classList.remove('show');
+    }
+
+    function markField(inputId, valid) {
+      const el = document.getElementById(inputId);
+      el.classList.toggle('error',   !valid);
+      el.classList.toggle('success',  valid);
+    }
+
+    /* ─── Toast ─── */
+    function toast(msg, type = 'info') {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.className   = `show t-${type}`;
+      clearTimeout(t._t);
+      t._t = setTimeout(() => { t.className = ''; }, 3600);
+    }
+
+    /* ─── Form Submit ─── */
+    document.getElementById('reg-form').addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      const roll    = document.getElementById('roll').value.trim();
+      const name    = document.getElementById('fullname').value.trim();
+      const branch  = document.getElementById('branch').value;
+      const section = document.getElementById('section').value;
+      const year    = document.getElementById('year').value;
+      const room    = document.getElementById('room').value.trim();
+      const phone   = document.getElementById('phone').value.trim();
+      const pw      = document.getElementById('password').value;
+      const conf    = document.getElementById('confirm').value;
+      const terms   = document.getElementById('terms').checked;
+
+      let valid = true;
+
+      /* Validate Roll */
+      const rollOk = roll.length >= 4;
+      markField('roll', rollOk);
+      showErr('roll-err', !rollOk);
+      if (!rollOk) valid = false;
+
+      /* Validate Name */
+      const nameOk = name.length >= 3;
+      markField('fullname', nameOk);
+      showErr('name-err', !nameOk);
+      if (!nameOk) valid = false;
+
+      /* Validate Branch */
+      const branchOk = !!branch;
+      markField('branch', branchOk);
+      showErr('branch-err', !branchOk);
+      if (!branchOk) valid = false;
+
+      /* Validate Section */
+      const sectionOk = !!section;
+      markField('section', sectionOk);
+      showErr('section-err', !sectionOk);
+      if (!sectionOk) valid = false;
+
+      /* Validate Year */
+      const yearOk = !!year;
+      markField('year', yearOk);
+      showErr('year-err', !yearOk);
+      if (!yearOk) valid = false;
+
+      /* Validate Room */
+      const roomOk = room.length >= 2;
+      markField('room', roomOk);
+      showErr('room-err', !roomOk);
+      if (!roomOk) valid = false;
+
+      /* Validate Phone */
+      const phoneOk = /^\d{10}$/.test(phone);
+      markField('phone', phoneOk);
+      showErr('phone-err', !phoneOk);
+      if (!phoneOk) valid = false;
+
+      /* Validate Password */
+      const pwOk = pw.length >= 8;
+      markField('password', pwOk);
+      if (!pwOk) {
+        document.getElementById('pw-err-msg').textContent = 'Password must be at least 8 characters';
+        showErr('pw-err', true);
+        valid = false;
+      } else { showErr('pw-err', false); }
+
+      /* Validate Confirm */
+      const confOk = pw === conf && conf.length > 0;
+      markField('confirm', confOk);
+      showErr('confirm-err', !confOk);
+      if (!confOk) valid = false;
+
+      /* Validate Terms */
+      showErr('terms-err', !terms);
+      if (!terms) valid = false;
+
+      if (!valid) {
+        toast('⚠️  Please fix the errors above', 'warn');
+        return;
+      }
+
+      /* Loading state */
+      const btn = document.getElementById('reg-btn');
+      btn.disabled = true;
+      btn.innerHTML = '<span class="spinner"></span> Registering…';
+
+      /* Console log */
+      console.log('╔══════════════════════════════════════════╗');
+      console.log('   VNR VJIET — Digital Outpass Registration  ');
+      console.log('╠══════════════════════════════════════════╣');
+      console.log('  Roll Number  :', roll);
+      console.log('  Full Name    :', name);
+      console.log('  Branch       :', branch);
+      console.log('  Section      :', section);
+      console.log('  Year         :', year);
+      console.log('  Room Number  :', room);
+      console.log('  Phone        :', phone);
+      console.log('  Password     :', pw);
+      console.log('╚══════════════════════════════════════════╝');
+
+      setTimeout(() => {
+        btn.disabled = false;
+        btn.innerHTML = `
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+               stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+            <circle cx="9" cy="7" r="4"/>
+            <path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
+            <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+          </svg>Register Now`;
+
+        toast(`✅  Registration successful! Welcome, ${name.split(' ')[0]}!`, 'success');
+        document.getElementById('reg-form').reset();
+        document.querySelectorAll('.field-input').forEach(el => {
+          el.classList.remove('success', 'error');
+        });
+        document.getElementById('pw-strength').classList.remove('show');
+      }, 1400);
+    });
+
+    /* Clear error on input */
+    ['roll','fullname','room'].forEach(id => {
+      document.getElementById(id).addEventListener('input', function () {
+        this.classList.remove('error', 'success');
+        showErr(id.replace('fullname','name') + '-err', false);
+      });
+    });
+    ['branch','section','year'].forEach(id => {
+      document.getElementById(id).addEventListener('change', function () {
+        this.classList.remove('error','success');
+      });
+    });
+    document.getElementById('confirm').addEventListener('input', function () {
+      this.classList.remove('error','success');
+      showErr('confirm-err', false);
+    });
+  </script>
+</body>
+</html>

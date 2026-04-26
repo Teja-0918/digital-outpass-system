@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Request Outpass — VNR VJIET</title>
+<link rel="stylesheet" href="app.css"/>
+<script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+</head>
+<body>
+<div class="strip"><span><span class="strip-dot"></span>NAAC A+ · Autonomous · JNTUH · VNR VJIET Bachupally</span><span class="strip-r">Digital Outpass System</span></div>
+<nav class="nav">
+  <a href="dashboard.html" class="brand">
+    <svg class="logo-s" viewBox="0 0 52 52" fill="none"><rect width="52" height="52" rx="10" fill="#c0182a"/><path d="M26 8L40 13V27C40 35 26 44 26 44S12 35 12 27V13Z" fill="#fff" opacity=".95"/><text x="17" y="33" font-family="Poppins" font-weight="800" font-size="18" fill="#c0182a" letter-spacing="-1">VNR</text><rect x="12" y="38" width="28" height="3" rx="1.5" fill="#c9980a"/><circle cx="26" cy="9" r="2.5" fill="#c9980a"/></svg>
+    <div><div class="bn">VNR VJIET</div><div class="bs">Vallurupalli Nageswara Rao Vignana Jyothi Institute of Engineering &amp; Technology</div><div class="bt">✦ Empowering Minds, Building Futures ✦</div></div>
+  </a>
+  <div class="nav-r" id="nav-r"></div>
+</nav>
+
+<div class="pg-center" style="flex:1">
+  <!-- Stepper -->
+  <div class="stepper">
+    <div class="stp on" id="s1"><div class="stp-c">1</div><div class="stp-l">Form</div></div><div class="stp-ln" id="ln1"></div>
+    <div class="stp" id="s2"><div class="stp-c">2</div><div class="stp-l">Parent</div></div><div class="stp-ln" id="ln2"></div>
+    <div class="stp" id="s3"><div class="stp-c">3</div><div class="stp-l">OTP</div></div><div class="stp-ln" id="ln3"></div>
+    <div class="stp" id="s4"><div class="stp-c">4</div><div class="stp-l">QR Code</div></div>
+  </div>
+
+  <div class="card card-640">
+    <div class="card-bar"></div>
+    <div class="cb">
+
+      <!-- STEP 1 -->
+      <div class="step-panel active" id="p1">
+        <div class="ch"><div class="ch-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div><div><h2 id="op-title">Out Pass Request</h2><p>Fill in exit & return details</p></div></div>
+        <div class="sh">Timing</div>
+        <div class="fr">
+          <div class="fld"><label class="fl">Out Time <span class="req">*</span></label><div class="iw"><span class="fi"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></span><input type="datetime-local" id="op-out" class="fin"/></div><div class="fe" id="e-out">Select out time</div></div>
+          <div class="fld"><label class="fl">In Time <span class="req">*</span></label><div class="iw"><span class="fi"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></span><input type="datetime-local" id="op-in" class="fin"/></div><div class="fe" id="e-in">Select in time (must be after out)</div></div>
+        </div>
+        <div class="dur" id="dur"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg><span id="dur-t"></span></div>
+        <div class="sh">Purpose</div>
+        <div class="fld"><label class="fl">Description <span class="req">*</span></label><div class="iw"><span class="fi top"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></span><textarea id="op-purp" class="fin" placeholder="Describe your reason…" maxlength="300"></textarea></div><div class="fe" id="e-purp">Enter a purpose</div></div>
+        <div class="fld"><label class="fl">Mobile <span class="opt">Optional</span></label><div class="iw"><span class="fi"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg></span><input type="tel" id="op-mob" class="fin" placeholder="10-digit" maxlength="10"/></div></div>
+        <div class="btn-row"><a href="dashboard.html" class="btn2">← Cancel</a><button class="btn" style="flex:1" onclick="goStep(2)">Proceed for Approval →</button></div>
+      </div>
+
+      <!-- STEP 2 -->
+      <div class="step-panel" id="p2">
+        <div class="ch"><div class="ch-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div><div><h2>Select Parent(s)</h2><p>Who should receive the OTP?</p></div></div>
+        <div class="pcard" id="par1" onclick="togP('par1')"><div class="pcard-av" style="background:#eff6ff">👨</div><div><div style="font-size:.85rem;font-weight:700">Father</div><div style="font-size:.75rem;color:var(--f500);font-family:monospace">98XX XX 1234</div></div><div class="pcard-chk" id="chk1"></div></div>
+        <div class="pcard" id="par2" onclick="togP('par2')"><div class="pcard-av" style="background:var(--gl)">👩</div><div><div style="font-size:.85rem;font-weight:700">Mother</div><div style="font-size:.75rem;color:var(--f500);font-family:monospace">87XX XX 5678</div></div><div class="pcard-chk" id="chk2"></div></div>
+        <div class="fe" id="e-par" style="text-align:center;margin-bottom:8px">Select at least one</div>
+        <div class="note"><span>⚠️</span><p>An OTP will be sent to the selected parent's registered number.</p></div>
+        <div class="btn-row"><button class="btn2" onclick="showStep(1)">← Back</button><button class="btn" style="flex:1" onclick="sendOTP()">Send OTP →</button></div>
+      </div>
+
+      <!-- STEP 3 -->
+      <div class="step-panel" id="p3">
+        <div class="ch"><div class="ch-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></div><div><h2>OTP Verification</h2><p>Enter the 4-digit code</p></div></div>
+        <div style="text-align:center;font-size:.82rem;color:var(--f500);margin:8px 0">OTP sent to <strong id="otp-to">98XXXX1234</strong></div>
+        <div class="otp-w"><input type="text" class="otp-b" maxlength="1" id="o1" oninput="otpI(this,1)" onkeydown="otpK(event,1)"/><input type="text" class="otp-b" maxlength="1" id="o2" oninput="otpI(this,2)" onkeydown="otpK(event,2)"/><input type="text" class="otp-b" maxlength="1" id="o3" oninput="otpI(this,3)" onkeydown="otpK(event,3)"/><input type="text" class="otp-b" maxlength="1" id="o4" oninput="otpI(this,4)" onkeydown="otpK(event,4)"/></div>
+        <div class="fe" id="e-otp" style="text-align:center">Invalid OTP</div>
+        <div style="text-align:center;font-size:.68rem;color:var(--f400)">Hint: use <strong>1234</strong></div>
+        <div class="btn-row" style="margin-top:16px"><button class="btn2" onclick="showStep(2)">← Back</button><button class="btn" style="flex:1" id="otp-btn" onclick="verifyOTP()">Verify OTP</button></div>
+      </div>
+
+      <!-- STEP 4 -->
+      <div class="step-panel" id="p4">
+        <div class="qr-ok"><div class="qr-ic">✅</div><h2 style="font-size:1.15rem;font-weight:800;margin-bottom:4px">Outpass Approved!</h2><p style="font-size:.82rem;color:var(--f500);margin-bottom:12px">Verified and approved</p><div class="qr-id" id="qr-rid"></div><div class="qr-fr"><div id="qr-code"></div></div><p style="font-size:.72rem;color:var(--f400);margin-top:8px"><strong>Important:</strong> Show this QR at exit & entry gates.</p>
+        <div style="display:flex;gap:10px;justify-content:center;margin-top:16px;flex-wrap:wrap"><a href="dashboard.html" class="btn" style="width:auto;padding:10px 18px;text-decoration:none">🏠 Dashboard</a><a href="history.html" class="btn2" style="text-decoration:none">📋 View History</a></div></div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<footer class="foot">&copy; 2026 <strong>VNR VJIET</strong> · Digital Outpass System</footer>
+<div id="toast"></div>
+
+<script>
+const API = 'http://localhost:5000';
+const user = JSON.parse(localStorage.getItem('vnr_user')||'null');
+const token = localStorage.getItem('vnr_token');
+if(!user || !token) window.location.href='login.html';
+
+let currentOutpassId = null;
+const parSel = {par1:false, par2:false};
+
+/* Type from URL */
+const params = new URLSearchParams(window.location.search);
+const passType = params.get('type')==='home' ? 'Home Pass' : 'Out Pass';
+const passTypeAPI = params.get('type')==='home' ? 'homepass' : 'outpass';
+document.getElementById('op-title').textContent = passType + ' Request';
+
+/* Navbar */
+if(user){const ini=user.name.split(' ').map(n=>n[0]).join('');document.getElementById('nav-r').innerHTML=`<div class="nav-av">${ini}</div><div><div class="nav-nm">${user.name}</div><div class="nav-rl">${user.roll} · ${user.branch}-${user.section}</div></div><a href="dashboard.html" class="btn-o">← Dashboard</a>`}
+
+function toast(m,t='t-ok'){const e=document.getElementById('toast');e.textContent=m;e.className=`show ${t}`;clearTimeout(e._t);e._t=setTimeout(()=>e.className='',3200)}
+
+/* Stepper */
+function showStep(n){
+  [1,2,3,4].forEach(i=>{document.getElementById('p'+i).classList.toggle('active',i===n);const s=document.getElementById('s'+i);s.className=i<n?'stp done':i===n?'stp on':'stp'});
+  [1,2,3].forEach(i=>document.getElementById('ln'+i).className=i<n?'stp-ln filled':'stp-ln');
+}
+
+/* Duration */
+const now=new Date(Date.now()-new Date().getTimezoneOffset()*60000).toISOString().slice(0,16);
+document.getElementById('op-out').min=now;document.getElementById('op-in').min=now;
+document.getElementById('op-out').addEventListener('change',function(){document.getElementById('op-in').min=this.value;calcD()});
+document.getElementById('op-in').addEventListener('change',calcD);
+function calcD(){const o=document.getElementById('op-out').value,i=document.getElementById('op-in').value,d=document.getElementById('dur');if(o&&i&&i>o){const m=Math.round((new Date(i)-new Date(o))/60000),h=Math.floor(m/60);document.getElementById('dur-t').textContent=`Duration: ${h>0?h+'h ':''}${m%60}m`;d.classList.add('show')}else d.classList.remove('show')}
+
+/* Step 1→2 validate only */
+function goStep(n){
+  if(n===2){
+    const ot=document.getElementById('op-out').value,it=document.getElementById('op-in').value,pu=document.getElementById('op-purp').value.trim();let ok=true;
+    if(!ot){document.getElementById('e-out').classList.add('show');ok=false}else document.getElementById('e-out').classList.remove('show');
+    if(!it||it<=ot){document.getElementById('e-in').classList.add('show');ok=false}else document.getElementById('e-in').classList.remove('show');
+    if(!pu){document.getElementById('e-purp').classList.add('show');ok=false}else document.getElementById('e-purp').classList.remove('show');
+    if(!ok){toast('⚠️ Fix errors','t-warn');return}
+  }
+  showStep(n);if(n===2)toast('✅ Form validated');
+}
+
+/* Parent toggle */
+function togP(id){parSel[id]=!parSel[id];document.getElementById(id).classList.toggle('sel',parSel[id]);document.getElementById(id).querySelector('.pcard-chk').innerHTML=parSel[id]?'✓':'';document.getElementById('e-par').classList.remove('show')}
+
+/* Send OTP → calls backend request-outpass */
+async function sendOTP(){
+  if(!parSel.par1&&!parSel.par2){document.getElementById('e-par').classList.add('show');toast('⚠️ Select parent','t-warn');return}
+
+  const outTime = document.getElementById('op-out').value;
+  const inTime  = document.getElementById('op-in').value;
+  const purpose = document.getElementById('op-purp').value.trim();
+
+  toast('📤 Sending OTP…', 't-info');
+  try {
+    const res = await fetch(`${API}/api/student/request-outpass`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+      body: JSON.stringify({ studentId: user.id, outTime, inTime, purpose, type: passTypeAPI })
+    });
+    const data = await res.json();
+    if (!res.ok) { toast('❌ ' + (data.message || 'Request failed'), 't-err'); return; }
+
+    currentOutpassId = data.outpassId;
+    localStorage.setItem('vnr_outpassId', currentOutpassId);
+    document.getElementById('otp-to').textContent = data.parentPhone1 || '98XXXX1234';
+    showStep(3);
+    document.getElementById('o1').focus();
+    toast('📤 OTP sent to parent');
+  } catch(err) {
+    toast('⚠️ Server error. Is backend running?', 't-warn');
+  }
+}
+
+/* OTP input helpers */
+function otpI(el,n){el.value=el.value.replace(/\D/g,'');if(el.value&&n<4)document.getElementById('o'+(n+1)).focus();document.getElementById('e-otp').classList.remove('show');document.querySelectorAll('.otp-b').forEach(b=>b.classList.remove('err'))}
+function otpK(e,n){if(e.key==='Backspace'&&!e.target.value&&n>1)document.getElementById('o'+(n-1)).focus()}
+
+/* Verify OTP → calls backend verify-otp */
+async function verifyOTP(){
+  const otp=[1,2,3,4].map(i=>document.getElementById('o'+i).value).join('');
+  if(otp.length<4){document.querySelectorAll('.otp-b').forEach(b=>b.classList.add('err'));document.getElementById('e-otp').classList.add('show');return}
+
+  const btn=document.getElementById('otp-btn');btn.disabled=true;btn.innerHTML='<span class="spin"></span> Verifying…';
+
+  const outpassId = currentOutpassId || localStorage.getItem('vnr_outpassId');
+  if (!outpassId) { toast('❌ Session lost. Please restart.', 't-err'); btn.disabled=false; btn.innerHTML='Verify OTP'; return; }
+
+  try {
+    const res = await fetch(`${API}/api/student/verify-otp`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+      body: JSON.stringify({ outpassId, otp })
+    });
+    const data = await res.json();
+
+    if (!res.ok) {
+      document.querySelectorAll('.otp-b').forEach(b=>b.classList.add('err'));
+      document.getElementById('e-otp').classList.add('show');
+      btn.disabled=false; btn.innerHTML='Verify OTP';
+      toast('❌ ' + (data.message || 'Wrong OTP'), 't-err');
+      return;
+    }
+
+    /* OTP correct — show QR from backend */
+    document.querySelectorAll('.otp-b').forEach(b=>{b.classList.remove('err');b.classList.add('ok')});
+
+    setTimeout(() => {
+      document.getElementById('qr-rid').textContent = data.outpass.id || outpassId;
+      /* Display the backend-generated base64 QR image */
+      const qrEl = document.getElementById('qr-code');
+      qrEl.innerHTML = `<img src="${data.qrCode}" alt="QR Code" style="width:180px;height:180px;border-radius:10px;display:block;margin:auto"/>`;
+      showStep(4);
+      toast('🎉 Outpass Approved!');
+    }, 500);
+
+  } catch(err) {
+    toast('⚠️ Server error. Is backend running?', 't-warn');
+    btn.disabled=false; btn.innerHTML='Verify OTP';
+  }
+}
+</script>
+</body>
+</html>
